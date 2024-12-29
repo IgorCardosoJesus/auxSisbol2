@@ -1,0 +1,15 @@
+{
+    "name": "igor/projeto",
+    "description": "meu projeto Sisbol Easy",
+    "autoload": {
+        "psr-4": {
+            "Igor\\Projeto\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "igor Cardoso"
+        }
+    ],
+    "require": {}
+}

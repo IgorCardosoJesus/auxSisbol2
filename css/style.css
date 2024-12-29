@@ -1,0 +1,310 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: url(../img/padraocfc2020.jpeg);
+    background-size: cover;
+    margin: 0;
+    font-size: 20px;
+
+}
+
+.container {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-items: flex-start;
+}
+.duasBoxCospeConteudoFormulario{
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    width: 450px;
+}
+
+.box {
+    color: white;
+    background: #ffffff10;
+    border: 2px solid #ffffff30;
+    backdrop-filter: blur(200px);
+    padding: 15px;
+    border-radius: 15px;
+    min-width: 100vh;
+    max-width: 200vh;
+    margin: 8vh 10px 10px 10px;
+}
+
+
+#formulariobasico{
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.linhanoMeioDaPagina{
+    border-left: 6px solid rgb(79 76 76 / 32%);
+}
+
+.reiniciar{
+    display: flex;
+    margin-top: 2vh;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
+    background-image: linear-gradient(to right,#848484, #344E41);
+    width: 100%;
+    border: none;
+    padding: 15px;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-image 1s;
+    border-radius: 10px;
+    justify-content: center;
+
+}
+.reiniciar:hover{
+    background-image: linear-gradient(to right, #A3B18A, #588157 );
+}
+
+.escolhaInicial{
+    width: 50vh;
+    margin: 5vh 2vh 2vh 2vh;
+}
+
+.complemento{
+    width: 50vh;
+    margin: 0vh 2vh 2vh 2vh;
+}
+
+.titleform{
+    justify-content: center;
+}
+
+
+.boxNotaGerada {
+    color: white;
+    background: #ffffff10;
+    border: 2px solid #ffffff30;
+    backdrop-filter: blur(60px);
+    padding: 15px;
+    border-radius: 15px;
+    width: 30%;
+    /* Ajuste conforme necessário */
+    min-width: 400px;
+    max-width: 450px;
+    /* Adicione um tamanho máximo para evitar que a caixa fique muito larga */
+    margin: 20px 10px 10px 10px;
+    /* Isso centraliza a caixa horizontalmente */
+}
+
+.campoDosAvisosDireita {
+    color: white;
+    background: #ffffff10;
+    border: 2px solid #ffffff30;
+    backdrop-filter: blur(200px);
+    padding: 15px;
+    border-radius: 15px;
+    width: 30%;
+    /* Ajuste conforme necessário */
+    min-width: 370px;
+    max-width: 400px;
+    /* Adicione um tamanho máximo para evitar que a caixa fique muito larga */
+    margin: 20px 10px 10px 10px;
+    /* Isso centraliza a caixa horizontalmente */
+}
+
+fieldset {
+    padding: 15px;
+}
+
+legend {
+    padding: 10px;
+    text-align: center;
+    FONT-SIZE: 20px;
+    FONT-FAMILY: Arial;
+}
+
+.legendaFildset{
+    color: black;
+    text-shadow: none;
+}
+
+
+[id^="data_"] {
+    border: none;
+    padding: 8px;
+    border-radius: 10px;
+    outline: none;
+    font-size: 15px;
+}
+
+.su{
+    border: none;
+    padding: 8px;
+    border-radius: 10px;
+    outline: none;
+    font-size: 15px;
+    width: 50%;
+}
+
+
+#submit {
+    background-image: linear-gradient(to right,#848484, #344E41);
+    width: 100%;
+    border: none;
+    padding: 15px;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-image 1s;
+    border-radius: 10px;
+}
+
+#submit:hover {
+    background-image: linear-gradient(to right, #A3B18A, #588157 );
+}
+
+#button, #buttonFechamento {
+    background-image: linear-gradient(to right,#848484, #344E41);
+    width: 100%;
+    border: none;
+    padding: 15px;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-image 1s;
+    border-radius: 10px;
+}
+
+#button:hover, #buttonFechamento:hover {
+    background-image: linear-gradient(to right, #A3B18A, #588157 );
+}
+
+.botoes{
+    color: black;
+    text-shadow: none;
+    font-family: Arial;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.hidden {
+    display: none;
+}
+
+.linha-horizontal {
+    height: 3px;
+    background-color: #0d0d0d;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.linha-horizontal-entre-campos {
+    height: 1px;
+    background-color: #0d0d0d;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+nav{
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-bottom: 5px solid #ffffff30;
+    margin: 0px 0px 10px 0px;
+}
+
+footer{
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-top: 5px solid #ffffff30;
+    margin: 10px 0px 0px 0px;
+}
+.flex-conteiner-footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 15px;
+    font-family: monospace;
+}
+
+a {
+    color: #007bff; /* Define a cor do link para azul (#007bff é o azul padrão do Bootstrap) */
+    text-decoration: none; /* Remove o sublinhado padrão */
+}
+
+a:hover {
+    text-decoration: underline; /* Adiciona sublinhado quando o mouse passa por cima do link */
+}
+
+.conteinerNav{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+.button{
+    position:relative;
+    display:inline-block;
+    margin-top: 5px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    margin-left: 10px;
+    
+}
+
+.button a{
+    color:white;
+    font-family:Helvetica, sans-serif;
+    font-weight:bold;
+    font-size:15px;
+    text-align: center;
+    text-decoration:none;
+    background-color:#5a5a5a;
+    display:block;
+    position:relative;
+    padding:10px 5px;
+    
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    text-shadow: 0px 1px 0px #000;
+    filter: dropshadow(color=#000, offx=0px, offy=1px);
+    
+    -webkit-box-shadow:inset 0 1px 0 #FFE5C4, 0 10px 0 #915100;
+    -moz-box-shadow:inset 0 1px 0 #FFE5C4, 0 10px 0 #915100;
+    box-shadow:inset 0 1px 0 #FFE5C4, 0 10px 0 #636363;
+    
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.button a:active{
+    top:10px;
+    background-color:#0084ff;
+    
+    -webkit-box-shadow:inset 0 1px 0 #0020a0, inset 0 -3px 0 #1100ff;
+    -moz-box-shadow:inset 0 1px 0 #00d0ff, inset 0 -3pxpx 0 #0085b6;
+    box-shadow:inset 0 1px 0 #0f24ac, inset 0 -3px 0 #002c91;
+}
+
+.button:after{
+    content:"";
+    height:100%;
+    width:100%;
+    padding:4px;
+    position: absolute;
+    bottom:-15px;
+    left:-4px;
+    z-index:-1;
+    background-color:#2B1800;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+

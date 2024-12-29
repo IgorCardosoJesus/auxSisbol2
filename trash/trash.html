@@ -1,0 +1,206 @@
+<select id="QualSUSentinelas1" name="opcao1campoSUSentinelas" class="su">
+    <option value="1ª Cia Fuz Bld">1ª Cia Fuz Bld</option>
+    <option value="2ª Cia Fuz Bld">2ª Cia Fuz Bld</option>
+    <option value="3ª Cia Fuz Bld">3ª Cia Fuz Bld</option>
+    <option value="4ª Cia Fuz Bld">4ª Cia Fuz Bld</option>
+    <option value="Cia C Ap">Cia C Ap</option>
+    <option value="NPOR">NPOR</option>
+</select>
+<br><br>
+<label for="data_nascimento"><b>Escala do dia:</b></label>
+<input type="date" name="data_nascimento" id="data_nascimento" required>
+
+
+
+<div id="camposAdicionais" class="hidden">
+    <div class="linha-horizontal"></div>
+    <label for="data_apresentacao"><b>Apresentou quando: </b></label>
+    <br><br>
+    <input type="date" name="data_apresentacao" id="data_apresentacao" required>
+    <br><br>
+    <input type="radio" id="TermTransito" name="ApresentEspecifica" value="Término de Transito" required>
+    <label for="tipoNota">Término de Trânsito</label>
+    <br>
+    <input type="radio" id="TermFerias" name="ApresentEspecifica" value="Término de Férias" required>
+    <label for="tipoNota">Término de Férias</label>
+    <br><br>
+    <label for="QualSUSentinelas1">SU Militar:</label>
+    <select id="QualSUSentinelas1" name="opcao1campoSUSentinelas" class="su">
+        <option value="1ª Cia Fuz Bld">1ª Cia Fuz Bld</option>
+        <option value="2ª Cia Fuz Bld">2ª Cia Fuz Bld</option>
+        <option value="3ª Cia Fuz Bld">3ª Cia Fuz Bld</option>
+        <option value="4ª Cia Fuz Bld">4ª Cia Fuz Bld</option>
+        <option value="Cia C Ap">Cia C Ap</option>
+        <option value="NPOR">NPOR</option>
+    </select>
+    <br><br>
+</div>
+<script>
+    // Adiciona um evento de clique nos radio buttons
+    document.querySelectorAll('input[name="tipoNota"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            // Oculta os campos adicionais
+            document.getElementById('camposAdicionais').classList.add('hidden');
+
+            // Verifica se o radio button "Sim" está selecionado
+            if (document.getElementById('Apresentacoes').checked) {
+                // Mostra os campos adicionais apenas se "Sim" estiver selecionado
+                document.getElementById('camposAdicionais').classList.remove('hidden');
+            }
+        });
+    });
+</script>
+
+
+TXTFechamentoTXTFechamentoTXTFechamentoTXTFechamentoTXTFechamentoTXTFechamentoTXTFechamentoTXTFechamentoTXTFechamentoTXTFechamentoTXTFechamentoTXTFechamentoTXTFechamento
+
+TXTFechamentoTXTFechamento                  
+<button type="button" class="copiarFechamento" id="buttonFechamento">Copiar Texto de Fechamento</button><br><br>
+<script>
+    const btnCopiarTextFechamento = document.querySelector('.copiarFechamento');
+    const textAreaTextoFechamento = document.querySelector('.TXTFechamento');
+    
+    btnCopiarTextFechamento.addEventListener('click',(e) =>{
+        //console.log(textAreaTextoAbertura.value);
+        navigator.clipboard.writeText(textAreaTextoFechamento.value);
+        alert('Texto de Fechamento copiado com sucesso!');
+    });
+</script>
+
+
+================ PARA TRABALHAR EM CIMA ========================
+<input type="radio" id="Ferias" name="tipoNota" value="ferias" required>
+<label for="Ferias">Férias</label>
+<br>
+<input type="radio" id="DispReco" name="tipoNota" value="DispensaCoReco" required>
+<label for="DispReco">Dispensa Como Recompensa</label>
+<br>
+
+
+
+
+==========================================
+$funcoes = array(
+    "Cmt 1ª Cia Fuz Bld",
+    "Sgte 1ª Cia Fuz Bld",
+    "Aux Sgte 1ª Cia Fuz Bld",
+    "Fur 1ª Cia Fuz Bld",
+    "Enc Mat 1ª Cia Fuz Bld",
+    "Aux Enc Mat 1ª Cia Fuz Bld",
+    "Rspnl Res Armt 1ª Cia Fuz Bld",
+    "Cmt 2ª Cia Fuz Bld",
+    "Sgte 2ª Cia Fuz Bld",
+    "Fur 2ª Cia Fuz Bld",
+    "Enc Mat 2ª Cia Fuz Bld",
+    "Rspnl Res Armt 2ª Cia Fuz Bld",
+    "Cmt 3ª Cia Fuz Bld",
+    "Sgte 3ª Cia Fuz Bld",
+    "Aux Sgte 3ª Cia Fuz Bld",
+    "Fur 3ª Cia Fuz Bld",
+    "Enc Mat 3ª Cia Fuz Bld",
+    "Aux Enc Mat 3ª Cia Fuz Bld",
+    "Rspnl Res Armt 3ª Cia Fuz Bld",
+    "Cmt 4ª Cia Fuz Bld",
+    "Sgte 4ª Cia Fuz Bld",
+    "Aux Sgte 4ª Cia Fuz Bld",
+    "Fur 4ª Cia Fuz Bld",
+    "Enc Mat 4ª Cia Fuz Bld",
+    "Aux Enc Mat 4ª Cia Fuz Bld",
+    "Rspnl Res Armt 4ª Cia Fuz Bld",
+    "Cmt Cia C Ap",
+    "Sgte Cia C Ap",
+    "Aux Sgte Cia C Ap",
+    "Fur Cia C Ap",
+    "Enc Mat Cia C Ap",
+    "Aux Enc Mat Cia C Ap",
+    "Rspnl Res Armt Cia C Ap",
+    "Instr Ch NPOR",
+    "Sgte NPOR",
+    "Aux Sgte NPOR",
+    "Fur NPOR",
+    "Enc Mat NPOR",
+    "Aux Enc Mat NPOR",
+    "Rspnl Res Armt NPOR",
+    "Reg B Mus",
+    "Sgte B Mus",
+    "Aux Sgte B Mus",
+    "Fur B Mus",
+    "Enc Mat B Mus",
+    "Aux Enc Mat B Mus",
+    "Ch 1ª Seç",
+    "Aux 1ª Seç",
+    "Ch 2ª Seç",
+    "Aux 2ª Seç",
+    "Ch 3ª Seç",
+    "Aux 3ª Seç",
+    "Ch 4ª Seç",
+    "Aux 4ª Seç",
+    "Ch Fisc Adm",
+    "Aux Fisc Adm",
+    "Ch Salc",
+    "Aux Salc",
+    "Ch P.O",
+    "Aux P.O",
+    "Ch SPP",
+    "Aux SPP",
+    "Ch Infor",
+    "Aux Infor",
+    "Ch S Seç Sv Just",
+    "Aux S Seç Sv Just",
+    "Ch PRM",
+    "Aux PRM",
+    "Ch Conf",
+    "Aux Conf",
+    "Ch Sect",
+    "Aux Sect",
+    "Ch Set Fin",
+    "Aux Set Fin",
+    "Ch RP",
+    "Aux RP",
+    "Ch SFPC",
+    "Aux SFPC",
+    "Ch SVP",
+    "Aux SVP",
+    "Ch Almox",
+    "Aux Almox",
+    "Ch Set Aprv",
+    "Aux Set Aprv",
+    "Ch Fusex",
+    "Aux Fusex"
+    );
+
+    $ambitosTemMaterial = array(
+        "1ª Cia Fuz Bld",
+        "Res Armt 1ª Cia Fuz Bld",
+        "2ª Cia Fuz Bld",
+        "Res Armt 2ª Cia Fuz Bld",
+        "3ª Cia Fuz Bld",
+        "Res Armt 3ª Cia Fuz Bld",
+        "4ª Cia Fuz Bld",
+        "Res Armt 4ª Cia Fuz Bld",
+        "Cia C Ap",
+        "Res Armt Cia C Ap",
+        "NPOR",
+        "Res Armt NPOR",
+        "B Mus",
+        "1ª Seç",
+        "2ª Seç",
+        "3ª Seç",
+        "4ª Seç",
+        "Fisc Adm",
+        "Salc",
+        "P.O",
+        "SPP",
+        "Infor",
+        "S Seç Sv Just",
+        "PRM",
+        "Conf",
+        "Sect",
+        "Set Fin",
+        "RP",
+        "SFPC",
+        "SVP",
+        "Almox",
+        "Set Aprv",
+        "Fusex",
+        );

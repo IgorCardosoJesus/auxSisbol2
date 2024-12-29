@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Militares</title>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: linear-gradient(to right, rgb(77, 255, 61), rgb(17, 54, 71));
+            margin: 0;
+        }
+
+        .container {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+        }
+
+        .box {
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            border-radius: 15px;
+            width: 30%; /* Ajuste conforme necessário */
+            min-width: 300px;
+            max-width: 600px; /* Adicione um tamanho máximo para evitar que a caixa fique muito larga */
+            margin: 50px auto; /* Isso centraliza a caixa horizontalmente */
+        }
+        fieldset{
+            border: 3px solid rgb(0, 255, 85);
+        }
+        legend{
+            border: 1px solid rgb(0, 255, 85);
+            padding: 10px;
+            text-align: center;
+            background-color: rgb(0, 255, 85);
+            border-radius: 8px;
+        }
+        .inputBox{
+            position: relative;
+        }
+        .inputUser{
+            background: none;
+            border: none;
+            border-bottom: 1px solid white;
+            outline: none;
+            color: white;
+            font-size: 15px;
+            width: 100%;
+            letter-spacing: 2px;
+        }
+        .labelInput{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            pointer-events: none;
+            transition: .5s;
+        }
+        .inputUser:focus ~ .labelInput,
+        .inputUser:valid ~ .labelInput{
+            top: -20px;
+            font-size: 12px;
+            color: dodgerblue;
+        }
+        #data_nascimento{
+            border: none;
+            padding: 8px;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+        }
+        .suqg{
+            border: none;
+            padding: 8px;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+            width: 30%;
+        }
+        .postoGrad{
+            border: none;
+            padding: 8px;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .pretaVermelha{
+            border: none;
+            padding: 8px;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+            width:auto;
+        }
+
+        #submit{
+            background-image: linear-gradient(to right,rgb(0, 92, 197), rgb(90, 20, 220));
+            width: 100%;
+            border: none;
+            padding: 15px;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        #submit:hover{
+            background-image: linear-gradient(to right,rgb(0, 80, 172), rgb(80, 19, 195));
+        }
+
+        .hidden {
+            display: none;
+        }
+        .linha-horizontal {
+            height: 1px;
+            background-color: #09ff00;
+            width: 100%;
+            margin: 0 auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .linha-horizontal-entre-campos{
+            height: 1px;
+            background-color: #406dff;
+            width: 100%;
+            margin: 0 auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="box">
+        <form action="">
+            <fieldset>
+                <legend><b>Cadastrar Serviço</b></legend>
+                <br>
+                <label for="data_nascimento"><b>Escala do dia:</b></label>
+                <input type="date" name="data_nascimento" id="data_nascimento" required>
+                <br><br>
+                <label for="selectPretaVermelha">Tipo de Escala:</label>
+                <select id="selectPretaVermelha" name="pretaVermelha" class="pretaVermelha">
+                    <option value="Preta">Escala Preta</option>
+                    <option value="Vermelha">Escala Vermelha</option>
+                </select>
+
+                <div class="linha-horizontal"></div>
+                
+                <p>Superior de Dia:
+                <input type="radio" id="simSupDia" name="escolhaSupDia" value="sim" required>
+                <label for="sim">Sim</label>
+                <input type="radio" id="naoSupDia" name="escolhaSupDia" value="nao" required>
+                <label for="nao">Não</label>
+                <br>               
+                <div id="camposAdicionais" class="hidden">
+                    <label for="selectPostGrad">Posto/Grad Sup Dia:</label>
+                    <select id="selectPostGrad" name="postograd" class="postoGrad">
+                        <option value="Cel">Cel</option>
+                        <option value="Ten Cel">Ten Cel</option>
+                        <option value="Maj">Major</option>
+                        <option value="Cap">Capitão</option>
+                    </select>
+                    <br><br>
+                    <div class="inputBox">
+                    <input type="text" id="nomeGuerra" name="nomeGuerra" class="inputUser" required>
+                    <label for="nomeGuerra" class="labelInput">Nome de Guerra do Superior de Dia:</label>
+                    </div>
+                    <br>
+                </div>
+                <div class="linha-horizontal-entre-campos"></div>
+                <p>Grad Perm QG:
+                <input type="radio" id="simGradQG" name="escolhaGradQG" value="sim" required>
+                <label for="sim">Sim</label>
+                <input type="radio" id="naoGradQG" name="escolhaGradQG" value="nao" required>
+                <label for="nao">Não</label>
+                <div class="linha-horizontal-entre-campos"></div>
+                <p>Gu QG (3º Sgt/Cb/Sd):
+                <input type="radio" id="simGuQG" name="escolhaGuQG" value="sim" required>
+                <label for="sim">Sim</label>
+                <input type="radio" id="naoGuQG" name="escolhaGuQG" value="nao" required>
+                <label for="nao">Não</label>
+                <br>                
+                <div id="camposAdicionaisGuQG" class="hidden">
+                    <label for="QuantidadeSdSUQG">Quant Sd:</label>
+                    <select id="QuantidadeSdSUQG" name="QTDeSdSUQG" class="postoGrad">
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                    </select>
+                    <label for="QualSU">SU:</label>
+                    <select id="QualSU" name="SU" class="suqg">
+                        <option value="1ª Cia Fuz Bld">1ª Cia Fuz Bld</option>
+                        <option value="2ª Cia Fuz Bld">2ª Cia Fuz Bld</option>
+                        <option value="3ª Cia Fuz Bld">3ª Cia Fuz Bld</option>
+                        <option value="4ª Cia Fuz Bld">4ª Cia Fuz Bld</option>
+                        <option value="Cia C Ap">Cia C Ap</option>
+                        <option value="NPOR">NPOR</option>
+                    </select>
+                    <br><br>
+                    <label for="segundaQuantidadeSdSUQG">Quant Sd:</label>
+                    <select id="segundaQuantidadeSdSUQG" name="QTDeSdSUQG" class="postoGrad">
+                        <option value="Null"></option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                    </select>
+                    <label for="QualSU">SU:</label>
+                    <select id="segundaQualSU" name="SU" class="suqg">
+                        <option value="Null"></option>
+                        <option value="1ª Cia Fuz Bld">1ª Cia Fuz Bld</option>
+                        <option value="2ª Cia Fuz Bld">2ª Cia Fuz Bld</option>
+                        <option value="3ª Cia Fuz Bld">3ª Cia Fuz Bld</option>
+                        <option value="4ª Cia Fuz Bld">4ª Cia Fuz Bld</option>
+                        <option value="Cia C Ap">Cia C Ap</option>
+                        <option value="NPOR">NPOR</option>
+                    </select>
+                    <br><br>
+                    <label for="terceiraQuantidadeSdSUQG">Quant Sd:</label>
+                    <select id="terceiraQuantidadeSdSUQG" name="QTDeSdSUQG" class="postoGrad">
+                        <option value="Null"></option>
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                    </select>
+                    <label for="QualSU">SU:</label>
+                    <select id="terceiraQualSU" name="SU" class="suqg">
+                        <option value="Null"></option>
+                        <option value="1ª Cia Fuz Bld">1ª Cia Fuz Bld</option>
+                        <option value="2ª Cia Fuz Bld">2ª Cia Fuz Bld</option>
+                        <option value="3ª Cia Fuz Bld">3ª Cia Fuz Bld</option>
+                        <option value="4ª Cia Fuz Bld">4ª Cia Fuz Bld</option>
+                        <option value="Cia C Ap">Cia C Ap</option>
+                        <option value="NPOR">NPOR</option>
+                    </select>
+                </div>
+                <div class="linha-horizontal-entre-campos"></div>   
+                <p>Mot Van HGeC:
+                <input type="radio" id="simMotVan" name="escolhaMotVanHGeC" value="sim" required>
+                <label for="sim">Sim</label>
+                <input type="radio" id="naoMotVan" name="escolhaMotVanHGeC" value="nao" required>
+                <label for="nao">Não</label>
+                <br>
+                <div id="camposAdicionaisMotoristaVan" class="hidden">
+                    <label for="MotVanHGeC">Posto/Grad Mot Van:</label>
+                    <select id="MotVanHGeC" name="MotVanHGeC" class="postoGrad">
+                        <option value="3º Sgt">3º Sgt</option>
+                        <option value="Cb EP">Cb EP</option>
+                        <option value="Cb EP">Sd Ep</option>
+                    </select>
+                    <br><br>
+                    <div class="inputBox">
+                    <input type="text" id="nomeGuerra" name="nomeGuerra" class="inputUser" required>
+                    <label for="nomeGuerra" class="labelInput">Nome de Guerra do Motorista da Van:</label>
+                    </div>
+                    <br>
+                </div>
+                <div class="linha-horizontal-entre-campos"></div>
+                <p>Corneteiro QG:
+                <input type="radio" id="simCorneteiro" name="escolhaCorneteiroQG" value="sim" required>
+                <label for="sim">Sim</label>
+                <input type="radio" id="naoCorneteiro" name="escolhaCorneteiroQG" value="nao" required>
+                <label for="nao">Não</label>
+                <br>
+                <div id="camposAdicionaisCorneteiroQG" class="hidden">
+                    <label for="CornetaQG">Posto/Grad Corneteiro QG:</label>
+                    <select id="CornetaQG" name="CornetaQG" class="postoGrad">
+                        <option value="Cb">Cb</option>
+                        <option value="Sd">Sd</option>
+                    </select>
+                    <br><br>
+                    <div class="inputBox">
+                    <input type="text" id="nomeGuerra" name="nomeGuerra" class="inputUser" required>
+                    <label for="nomeGuerra" class="labelInput">Nome de Guerra do Corneteiro QG:</label>
+                    </div>
+                    <br>
+                </div>
+                <div class="linha-horizontal"></div>
+                
+                <p>Oficial de Dia:
+                <input type="radio" id="simOfDia" name="escolhaOfDia" value="sim" required>
+                <label for="sim">Sim</label>
+                <input type="radio" id="naoOfDia" name="escolhaOfDia" value="nao" required>
+                <label for="nao">Não</label>
+                <br>
+                <div class="linha-horizontal-entre-campos"></div>
+                <p>Sombra Oficial de Dia:
+                <input type="radio" id="simSombraOfDia" name="escolhaSombraOfDia" value="sim" required>
+                <label for="sim">Sim</label>
+                <input type="radio" id="naoSombraOfDia" name="escolhaSombraOfDia" value="nao" required>
+                <label for="nao">Não</label>
+                <br>
+                <div id="camposAdicionaisSombraOfDia" class="hidden">
+                    <label for="SombraOfDia">Posto/Grad Sombra Of Dia:</label>
+                    <select id="SombraOfDia" name="SombraOfDia" class="postoGrad">
+                        <option value="1º Ten">1º Ten</option>
+                        <option value="2º Ten">2º Ten</option>
+                        <option value="Asp Of">Asp Of</option>
+                        <option value="Alu NPOR">Alu NPOR</option>
+                    </select>
+                    <br><br>
+                    <div class="inputBox">
+                    <input type="text" id="nomeGuerra" name="nomeGuerra" class="inputUser" required>
+                    <label for="nomeGuerra" class="labelInput">Nome de Guerra do Sombra do Of Dia:</label>
+                    </div>
+                    <br>
+                </div>
+                <div class="linha-horizontal-entre-campos"></div>
+                <p>Adjunto do Oficial de Dia:
+                <input type="radio" id="simAdjOfDia" name="escolhaAdjOfDia" value="sim" required>
+                <label for="sim">Sim</label>
+                <input type="radio" id="naoAdjOfDia" name="escolhaAdjOfDia" value="nao" required>
+                <label for="nao">Não</label>
+                <br>
+                <div class="linha-horizontal-entre-campos"></div>
+                <p>Sombra Adjunto do Oficial de Dia:
+                    <input type="radio" id="simSombraAdjOfDia" name="escolhaSombraAdjOfDia" value="sim" required>
+                    <label for="sim">Sim</label>
+                    <input type="radio" id="naoSombraAdjOfDia" name="escolhaSombraAdjOfDia" value="nao" required>
+                    <label for="nao">Não</label>
+                    <br>
+                    <div id="camposAdicionaisSombraAdjOfDia" class="hidden">
+                        <label for="SombraAdjOfDia">Posto/Grad Sombra Adj Of Dia:</label>
+                        <select id="SombraAdjOfDia" name="SombraAdjOfDia" class="postoGrad">
+                            <option value="1º Sgt">1º Sgt</option>
+                            <option value="2º Sgt">2º Sgt</option>
+                            <option value="3º Sgt">3º Sgt</option>
+                            <option value="Alu NPOR">Alu NPOR</option>
+                        </select>
+                        <br><br>
+                        <div class="inputBox">
+                        <input type="text" id="nomeGuerra" name="nomeGuerra" class="inputUser" required>
+                        <label for="nomeGuerra" class="labelInput">Nome de Guerra do Adjunto do Of Dia:</label>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="linha-horizontal-entre-campos"></div>
+                <p>Cmt Gda:
+                <input type="radio" id="simCmtGda" name="escolhaCmtGda" value="sim" required>
+                <label for="sim">Sim</label>
+                <input type="radio" id="naoCmtGda" name="escolhaCmtGda" value="nao" required>
+                <label for="nao">Não</label>
+                <br>
+                <div class="linha-horizontal-entre-campos"></div>
+                <p>Sombra Cmt Gda:
+                    <input type="radio" id="simSombraCmtGda" name="escolhaSombraCmtGda" value="sim" required>
+                    <label for="sim">Sim</label>
+                    <input type="radio" id="naoSombraCmtGda" name="escolhaSombraCmtGda" value="nao" required>
+                    <label for="nao">Não</label>
+                    <br>
+                    <div id="camposAdicionaisSombraCmtGda" class="hidden">
+                        <label for="SombraCmtGda">Posto/Grad Sombra Cmt Gda:</label>
+                        <select id="SombraCmtGda" name="SombraCmtGda" class="postoGrad">
+                            <option value="3º Sgt">3º Sgt</option>
+                            <option value="Alu CFST">Alu CFST</option>
+                            <option value="Alu NPOR">Alu NPOR</option>
+                        </select>
+                        <br><br>
+                        <div class="inputBox">
+                        <input type="text" id="nomeGuerra" name="nomeGuerra" class="inputUser" required>
+                        <label for="nomeGuerra" class="labelInput">Nome de Guerra do Sombra Cmt Gda:</label>
+                        </div>
+                        <br>
+                    </div>
+                <input type="submit" name="submit" id="submit">
+            </fieldset>
+        </form>
+        
+        <script>
+            // Adiciona um evento de clique nos radio buttons
+            document.querySelectorAll('input[name="escolhaSupDia"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    // Oculta os campos adicionais
+                    document.getElementById('camposAdicionais').classList.add('hidden');
+    
+                    // Verifica se o radio button "Sim" está selecionado
+                    if (document.getElementById('simSupDia').checked) {
+                        // Mostra os campos adicionais apenas se "Sim" estiver selecionado
+                        document.getElementById('camposAdicionais').classList.remove('hidden');
+                    }
+                });
+            });
+            // Adiciona um evento de clique nos radio buttons
+            document.querySelectorAll('input[name="escolhaGuQG"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    // Oculta os campos adicionais
+                    document.getElementById('camposAdicionaisGuQG').classList.add('hidden');
+    
+                    // Verifica se o radio button "Sim" está selecionado
+                    if (document.getElementById('simGuQG').checked) {
+                        // Mostra os campos adicionais apenas se "Sim" estiver selecionado
+                        document.getElementById('camposAdicionaisGuQG').classList.remove('hidden');
+                    }
+                });
+            });
+            document.querySelectorAll('input[name="escolhaMotVanHGeC"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    // Oculta os campos adicionais
+                    document.getElementById('camposAdicionaisMotoristaVan').classList.add('hidden');
+    
+                    // Verifica se o radio button "Sim" está selecionado
+                    if (document.getElementById('simMotVan').checked) {
+                        // Mostra os campos adicionais apenas se "Sim" estiver selecionado
+                        document.getElementById('camposAdicionaisMotoristaVan').classList.remove('hidden');
+                    }
+                });
+            });
+            document.querySelectorAll('input[name="escolhaCorneteiroQG"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    // Oculta os campos adicionais
+                    document.getElementById('camposAdicionaisCorneteiroQG').classList.add('hidden');
+    
+                    // Verifica se o radio button "Sim" está selecionado
+                    if (document.getElementById('simCorneteiro').checked) {
+                        // Mostra os campos adicionais apenas se "Sim" estiver selecionado
+                        document.getElementById('camposAdicionaisCorneteiroQG').classList.remove('hidden');
+                    }
+                });
+            });
+            document.querySelectorAll('input[name="escolhaSombraOfDia"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    // Oculta os campos adicionais
+                    document.getElementById('camposAdicionaisSombraOfDia').classList.add('hidden');
+    
+                    // Verifica se o radio button "Sim" está selecionado
+                    if (document.getElementById('simSombraOfDia').checked) {
+                        // Mostra os campos adicionais apenas se "Sim" estiver selecionado
+                        document.getElementById('camposAdicionaisSombraOfDia').classList.remove('hidden');
+                    }
+                });
+            });
+            document.querySelectorAll('input[name="escolhaSombraAdjOfDia"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    // Oculta os campos adicionais
+                    document.getElementById('camposAdicionaisSombraAdjOfDia').classList.add('hidden');
+    
+                    // Verifica se o radio button "Sim" está selecionado
+                    if (document.getElementById('simSombraAdjOfDia').checked) {
+                        // Mostra os campos adicionais apenas se "Sim" estiver selecionado
+                        document.getElementById('camposAdicionaisSombraAdjOfDia').classList.remove('hidden');
+                    }
+                });
+            });
+            document.querySelectorAll('input[name="escolhaSombraCmtGda"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    // Oculta os campos adicionais
+                    document.getElementById('camposAdicionaisSombraCmtGda').classList.add('hidden');
+    
+                    // Verifica se o radio button "Sim" está selecionado
+                    if (document.getElementById('simSombraCmtGda').checked) {
+                        // Mostra os campos adicionais apenas se "Sim" estiver selecionado
+                        document.getElementById('camposAdicionaisSombraCmtGda').classList.remove('hidden');
+                    }
+                });
+            });
+        </script>
+    </div>
+</body>
+</html> 

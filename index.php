@@ -1,0 +1,1593 @@
+<?php
+setlocale(LC_TIME, 'pt_BR');
+require 'vendor/autoload.php';
+use Igor\Projeto\funcoes\Apresentacoes;
+use Igor\Projeto\funcoes\FuncoesTransitorias;
+use Igor\Projeto\funcoes\Formatacoes;
+use Igor\Projeto\funcoes\TornoSemEfeito;
+use Igor\Projeto\funcoes\MudancaPlanoFerias;
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Aux Sisbol</title>
+    <!-- Icone da página -->
+    <link rel="icon" type="image/x-icon" href="img/insignia-cabo.png">
+    <!-- Link essencial para formatação dos campos select (Select Pesquisável) -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+    </style>
+</head>
+
+<body>
+    <!-- Navbar simples com os ícones de plaquinha (Criando ecossistema) -->
+    <nav>
+        <div class="conteinerNav">
+        <div>
+            <span style='font-size:12px;'>&#128679; SISTEMA EM CONSTRUÇÃO &#128679; SISTEMA EM CONSTRUÇÃO &#128679;</span>
+        </div>
+        <div ontouchstart="">
+            <div class="button">
+                <a href="img/manualUsuario.pdf" target="blank">Manual do Usuário</a>
+            </div>
+        </div>
+        <div>
+            <span style='font-size:12px;'>&#128679; SISTEMA EM CONSTRUÇÃO &#128679; SISTEMA EM CONSTRUÇÃO &#128679;</span>
+        </div>
+        </div>
+    </nav>
+    <div class="container"> <!-- Conteiner está organizando todo o conteúdo da página -->
+        <div class="box"> <!-- Box do formulário com todos os campos radio -->
+        <form id="formulariobasico" action="resultado.php" method="POST">
+            <div class="escolhaInicial">
+            
+                <!-- Começo questionário inicial -->
+                <p>Escolha o tipo de nota:</p><br>
+                <input type="radio" id="Apresentacoes" name="tipoNota" value="apresentacoesDiversas" required>
+                <label for="Apresentacoes">Apresentação</label>
+
+                <br><br>
+                <input type="radio" id="afastamento" name="tipoNota" value="afastamentosdiversos" required>
+                <label for="afastamento">Afastamentos Diversos &#x274e;</label>
+
+                <br><br>
+                <input type="radio" id="passagemFuncao" name="tipoNota" value="passagemFuncao" required>
+                <label for="passagemFuncao">Passagem e Recebimento de Função &#x274e;</label>
+
+                <br><br>
+                <input type="radio" id="funcaotransitoria" name="tipoNota" value="dispensaReassuncaoFuncao" required>
+                <label for="funcaotransitoria">Função Designação, Dispensa, Substituição Temporária e Reassunção de função &#x274e;</label>
+
+                <br><br>
+                <input type="radio" id="mudancaPF" name="tipoNota" value="mudancaPlanoFerias" required>
+                <label for="mudancaPF">Mudança no Plano de Férias &#x274e;</label>
+
+                <br><br>
+                <input type="radio" id="tornarSemEfeito" name="tipoNota" value="tornarSemEfeito" required>
+                <label for="tornarSemEfeito">Tornar sem efeito [Genérico]</label>
+
+                <br><br>
+                <input type="radio" id="inclusaoPlanFerias" name="tipoNota" value="inclusaoPlanFerias" required>
+                <label for="inclusaoPlanFerias">Inclusão no Plano de Férias &#x274e;</label>
+
+                <br><br>
+                <input type="radio" id="refDIExGenerico" name="tipoNota" value="refDIExGenerico" required>
+                <label for="refDIExGenerico">Referenciar DIEx no Boletim &#x274e;</label>
+
+                <!-- Último terço do código -->
+                <div class="linha-horizontal"></div>
+                    <label for="dataOportuna">Publicado em data oportuna:</label>
+                        <select id="dataOportuna" name="dateOportuna" class="campo30">
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    <br><br>
+                    <label for="SUDosMilitares">SU do(s) militar(es):</label>
+                        <select id="SUDosMilitares" name="SUGeral" class="campo40">
+                            <option value="o Cmt 1ª Cia Fuz Bld">1ª Cia Fuz Bld</option>
+                            <option value="o Cmt 2ª Cia Fuz Bld">2ª Cia Fuz Bld</option>
+                            <option value="o Cmt 3ª Cia Fuz Bld">3ª Cia Fuz Bld</option>
+                            <option value="o Cmt 4ª Cia Fuz Bld">4ª Cia Fuz Bld</option>
+                            <option value="o Cmt Cia C Ap">Cia C Ap</option>
+                            <option value="o Instr Ch NPOR">NPOR</option>
+                            <option value="o Reg B Mus">B Mus</option>
+                            <option value="o EM">EM</option>
+                            <option value="os Cmt SU">Várias SU</option>
+                        </select>
+                    <br><br>
+                    <button class="reiniciar" onclick="resetPage()">Reiniciar Página</button>
+                    <script>
+                        function resetPage() {
+                        // Reinicia a página
+                        window.location.reload();
+                        }
+                    </script>
+                    <div class="campoDosAvisosDireita">
+                        <legend class="legendaFildset"><b>Dicas &#x1F4CC;</b></legend>
+                        <span style='font-size:16px;'>- Os campos com * não são obrigatórios, verifique o contexto da nota e sobre oque se refere o campo &#128517;</span><br>
+                        <span style='font-size:16px;'>- O campo "SU do(s) militar(es):" refere-se a SU do(s) militar(es) da nota.</span><br>
+                        <span style='font-size:16px;'>- O campo "Publicado em data oportuna:" é para: o caso da nota atrasar 1 (um) mês ±, ou caso seja mandado colocar.</span><br>
+                        <span style='font-size:16px;'>- Por padrão, para fins de Alterações, o texto de abertura e fechamento é sempre no singular.</span>
+                        <legend class="legendaFildset"><b>Avisos &#x1F4CC;</b></legend>
+                        <span style='font-size:16px;'>- Sistema em construção, versão 2.0 (disponibilizado em 20 JUN 24 &#x1f4c6;), verifique o manual do usuário e as novas rotinas.</span><br> 
+                        <span style='font-size:16px;'>- No rodapé encontra-se o link do Forms para envio de relato de Bugs e/ou erros ortográficos.</span><br>
+                        <span style='font-size:16px;'>- &#x274e; = Rotina nova e/ou atualizada</span><br>
+                        <span style='font-size:16px;'>- &#9995; = Rotina em construção</span><br><br>
+                        <span style='font-size:16px;'>- Atualizações em breve &#x1F4E2;</span>
+                </div>
+            </div>
+
+            <div class="linhanoMeioDaPagina"></div>
+
+            <div class="complemento">
+
+                <!-- Fim questionário inicial (Que tipo de nota vai ser produzida) -->
+                <br><br>
+                <!-- Início formulário de todos os tipos de apresentação -->
+                <!-- propriedade hidden está colocara e é removida mediante acionamento do radio button (JS no final está controlando essa interação) -->
+                <!-- 0.1 
+                Campos Referente a apresentações diversas
+                Campos Referente a apresentações diversas
+                Campos Referente a apresentações diversas -->
+                <div id="camposAdicionais" class="hidden">
+                    <label for="data_apresentacao"><b>Apresentou quando: </b></label>
+                    <!-- Caixa tipo data para seleção do dia de referência -->
+                    <input type="date" name="data_apresentacao" id="data_apresentacao">
+                    <br>
+                    <div class="linha-horizontal-entre-campos"></div>
+                    <!-- Início dos tipos de nota referente a apresentação por término de férias -->
+                    <p><i>Referente a Férias</i></p><br>
+                    <input type="radio" id="Term30diasferias" name="ApresentEspecifica" value="term30dias">
+                    <label for="Term30diasferias">Término de 30 dias de Férias</label>
+                    <br>
+                    <input type="radio" id="termino1parcela15" name="ApresentEspecifica" value="term1parcela15">
+                    <label for="termino1parcela15">Término da 1ª Parcela de 15</label>
+                    <br>
+                    <input type="radio" id="termino2parcela15" name="ApresentEspecifica" value="term2parcela15">
+                    <label for="termino2parcela15">Término da 2ª Parcela de 15</label>
+                    <br>
+                    <input type="radio" id="termino1parcela10" name="ApresentEspecifica" value="term1parcela10">
+                    <label for="termino1parcela10">Término da 1ª Parcela de 10</label>
+                    <br>
+                    <input type="radio" id="termino2parcela10" name="ApresentEspecifica" value="term2parcela10">
+                    <label for="termino2parcela10">Término da 2ª Parcela de 10</label>
+                    <br>
+                    <input type="radio" id="termino3parcela10" name="ApresentEspecifica" value="term3parcela10">
+                    <label for="termino3parcela10">Término da 3ª Parcela de 10</label>
+
+                    <div id="campoAdicionalFerias" class="hidden">
+                        <br>
+                        <label for="anoDasFerias">Férias Referente a:</label>
+                        <?php $anos = Formatacoes::pegarAnosAnterioresAtualEPosteriores() ?>
+                        <select id="anoDasFerias" name="AnoFerias" class="campo50">
+                        <option value="null">Selecione</option>
+                        <?php foreach ($anos as $ano): ?>
+                            <option value="<?php echo "$ano"; ?>"><?php echo "$ano"; ?></option>
+                        <?php endforeach; ?>
+                        </select>
+                        <br><br>
+                    </div>
+
+                    <div class="linha-horizontal-entre-campos"></div>
+                    <!--Inicio das notas do tipo 'apresentação' por término de cargo/encargo/valores bem distintos -->
+                    <p><i>Cargo, encargo e valores</i></p><br>
+                    <input type="radio" id="TermTransmCargoEncargo" name="ApresentEspecifica" value="termTransmCargoEncargo">
+                    <label for="TermTransmCargoEncargo">Transmissão do Cargo e encargos (Sem carga)</label>
+                    <br><br>
+                    <input type="radio" id="TermRecebCargoEncargo" name="ApresentEspecifica" value="termRecebCargoEncargo">
+                    <label for="TermRecebCargoEncargo">Recebimento do Cargo e encargos (Sem carga)</label>
+                    <br><br>
+                    <input type="radio" id="TermPassMaterialCargo" name="ApresentEspecifica" value="termPassCargoMaterial">
+                    <label for="TermPassMaterialCargo">Transmissão da Carga, cargo e encargos</label>
+                    <br><br>
+                    <input type="radio" id="TermRecebMaterialCargo" name="ApresentEspecifica" value="termRecebCargoMaterial">
+                    <label for="TermRecebMaterialCargo">Recebimento da Carga, cargo e encargos</label>
+                    <br><br>
+                    <input type="radio" id="TermPassMaterial" name="ApresentEspecifica" value="termPassMaterial">
+                    <label for="TermPassMaterial">Passagem de Material e Valores</label>
+                    <br><br>
+                    <input type="radio" id="TermRecebMaterial" name="ApresentEspecifica" value="termRecebMaterial">
+                    <label for="TermRecebMaterial">Recebimento do Material e Valores</label>
+                    <br>
+
+                    <div id="campoAdicionalCargaCargo" class="hidden">
+                        <br>
+                        <label for="funcoesBtl">Função:</label>
+                        <!-- O value e o texto de cada option serão a mesma função -->
+                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        <select id="funcoesBtl" name="apresentouTermRecebFuncaoCargoEncargo" class="campo60">
+                            <?php foreach ($funcoes as $funcao): ?>
+                            <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
+                            <?php endforeach; ?>
+                        <select>
+                        <br>
+                    </div>
+
+                    <div id="camposAdicionaisCarga" class="hidden">
+                        <br>
+                        <label for="funcoesBtlCarga">Material da:</label>
+                        <?php $ambitosTemMaterial = Formatacoes::pegarFuncoesQueTemCarga() ?>
+                        <select id="funcoesBtlCarga" name="apresentouTermPassouRecebCarga" class="campo60">
+                            <?php foreach ($ambitosTemMaterial as $materiaisDa): ?>
+                            <option value="<?php echo $materiaisDa; ?>"><?php echo $materiaisDa; ?></option>
+                            <?php endforeach; ?>
+                        <select>
+                        <br>
+                    </div>
+
+                    <div class="linha-horizontal-entre-campos"></div>
+                    <!-- Início tipo de apresentações diversas -->
+                    <p><i>Dispensas e Diversos</i></p><br>
+                    <input type="radio" id="TermDispRecoCmtBtl" name="ApresentEspecifica" value="termDispRecoCmtBtl">
+                    <label for="TermDispRecoCmtBtl">Término Dispensa Recompensa Cmt Btl</label>
+                    <br><br>
+                    <div id="camposAdicionaisDispCmt" class="hidden">
+                    <br>    
+                    <label for="QtdeDias">Qtde dias gozou:</label>
+                        <select id="QtdeDias" name="DiasDispCmt" class="campo50">
+                        <?php
+                        for ($i = 1; $i <= 8; $i++) {
+                            $numero = str_pad($i, 2, "0", STR_PAD_LEFT);
+                            echo "<option value=\"$numero\">$i dia" . ($i > 1 ? "s" : "") . "</option>";
+                        }
+                        ?>
+                        </select>
+                        <br><br>
+                    </div>
+                    <input type="radio" id="TermDispRecoSCmtBtl" name="ApresentEspecifica" value="termDispRecoSCmt">
+                    <label for="TermDispRecoSCmtBtl">Término Dispensa Recompensa SCmt Btl</label>
+                    <br><br>
+                    <div id="camposAdicionaisDispSCmt" class="hidden">
+                        <br>
+                        <label for="QtdeDiasscmt">Qtde dias gozou:</label>
+                        <select id="QtdeDiasscmt" name="DiasDispSCmt" class="campo50">
+                            <option value="01">1 dia</option>
+                            <option value="02">2 dias</option>
+                            <option value="03">3 dias</option>
+                            <option value="04">4 dias</option>
+                        </select>
+                        <br><br>
+                    </div>
+                    <input type="radio" id="TermDispRecoSU" name="ApresentEspecifica" value="termDispRecoCmtCia">
+                    <label for="TermDispRecoSU">Término de Dispensa Recompensa Cmt SU</label>
+
+                    <div id="camposAdicionaisDispCmtSU" class="hidden">
+                        <br>                
+                        <label for="SUCmtSUdeuDisp">Cmt Cia resp disp:</label>
+                        <select id="SUCmtSUdeuDisp" name="CmtSUBondoso" class="campo50">
+                            <option value="do Cmt 1ª Cia Fuz Bld">1ª Cia Fuz Bld</option>
+                            <option value="do Cmt 2ª Cia Fuz Bld">2ª Cia Fuz Bld</option>
+                            <option value="do Cmt 3ª Cia Fuz Bld">3ª Cia Fuz Bld</option>
+                            <option value="do Cmt 4ª Cia Fuz Bld">4ª Cia Fuz Bld</option>
+                            <option value="do Cmt Cia C Ap">Cia C Ap</option>
+                            <option value="do Instr Ch NPOR">NPOR</option>
+                            <option value="do Reg B Mus">B Mus</option>
+                        </select>
+                        <br><br>
+                        <label for="QtdeDiasCmtSU">Qtde dias gozou:</label>
+                        <select id="QtdeDiasCmtSU" name="DiasDispCmtSU" class="campo50">
+                            <option value="01">1 dia</option>
+                            <option value="02">2 dias</option>
+                            <option value="03">3 dias</option>
+                            <option value="04">4 dias</option>
+                        </select>
+                    </div>
+                    <br><br>
+                    <input type="radio" id="TermDescoFerias" name="ApresentEspecifica" value="termDispDescoFerias">
+                    <label for="TermDescoFerias">Término de Dispensa para Desconto em Férias</label>
+                    <div id="camposAdicionaisDescoFerias" class="hidden">
+                        <br>    
+                        <label for="dispDescoFerias">Gozou quantos dias:</label>
+                        <select id="dispDescoFerias" name="gozoDispDescoFerias" class="campo50">   
+                            <?php
+                            for ($i = 1; $i <= 9; $i++) {
+                                $numero = str_pad($i, 2, "0", STR_PAD_LEFT);
+                                echo "<option value=\"$numero\">$i dia" . ($i > 1 ? "s" : "") . "</option>";
+                            }
+                            ?>
+                        </select>
+
+                        <br><br>
+                        <label for="anoDaDispDescoFerias">Referente a qual ano?</label>
+                        <?php $anos = Formatacoes::pegarAnosAnterioresAtualEPosteriores() ?>
+                        <select id="anoDaDispDescoFerias" name="DispDescFerias" class="campo50">
+                        <?php foreach ($anos as $ano): ?>
+                        <option value="<?php echo "$ano"; ?>">
+                            <?php echo "$ano"; ?></option>
+                        <?php endforeach; ?>
+                        </select>
+                        <br>
+                    </div>
+                    <br><br>
+                    <input type="radio" id="TermInstalacao" name="ApresentEspecifica" value="termInstalacao">
+                    <label for="TermInstalacao">Término de Instalação</label>
+                    <br><br>
+                    <input type="radio" id="TermTrasito" name="ApresentEspecifica" value="termtransito">
+                    <label for="TermTrasito">Término de Trânsito</label>
+                    <div id="camposAdicionaisDesistiuTransito" class="hidden">
+                        <br>    
+                        <label for="desistiuTransito">Desistiu de algum dia?</label>
+                            <select id="desistiuTransito" name="desistiuDiasTransito" class="campo50">
+                            <option value="nenhum">Não</option>   
+                            <?php
+                            for ($i = 1; $i <= 30; $i++) {
+                                $numero = str_pad($i, 2, "0", STR_PAD_LEFT);
+                                echo "<option value=\"$numero\">$i dia" . ($i > 1 ? "s" : "") . "</option>";
+                            }
+                            ?>
+                            </select>
+                        <br>
+                    </div>
+                    <br><br>
+                    <input type="radio" id="TermNupcias" name="ApresentEspecifica" value="termnupcias">
+                    <label for="TermTrasito">Término de Núpcias</label>
+                    <br><br>
+                    <input type="radio" id="TermLuto" name="ApresentEspecifica" value="termluto">
+                    <label for="TermLuto">Término de Luto</label>
+
+                    <div class="linha-horizontal"></div>
+                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                </div>
+                <!-- 0.2 
+                Campos Referente a dispensar de função / Substituir temporariamente / Reassunção função
+                Campos Referente a dispensar de função / Substituir temporariamente / Reassunção função
+                Campos Referente a dispensar de função / Substituir temporariamente / Reassunção função -->
+                <div id="camposAdicionaisFuncaoTransitoria" class="hidden">
+                    <label for="data_saida_retorno_funcao"><b>Data do evento: </b></label>
+                    <!-- Caixa tipo data para seleção do dia de referência -->
+                    <input type="date" name="data_saida_retorno_funcao" id="data_saida_retorno_funcao">
+                    <br>
+                    <div class="linha-horizontal-entre-campos"></div>
+                    <!-- Início dos tipos de nota referente a função transitoria -->
+                    <input type="radio" id="desigFuncao" name="estadoFuncaoTransitoria" value="designacaoFuncao">
+                    <label for="desigFuncao">Designação Função</label>
+                    <br>
+                    <div id="campoAdicionalDesignacaoFuncao" class="hidden">
+                        <br>
+                        <label for="nomeFuncaoDesignacao">Designado p/:</label>
+                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        <select id="nomeFuncaoDesignacao" name="qualFuncao" class="campo70">
+                            <?php foreach ($funcoes as $funcao): ?>
+                            <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
+                            <?php endforeach; ?>
+                        <select><br>
+                        <span style='font-size:15px; font-style: italic;'><i>*Usado apenas para<br>
+                            1- Designações de auxiliares ou funções mais simples<br>
+                            2- Só designa diretamente se não houver passagem de função-<br>
+                            (Ou seja sem contagem de prazo)</i>
+                        </span>
+                        <div class="linha-horizontal-entre-campos"></div>
+                    </div>
+                    
+                    <input type="radio" id="dispensaFuncao" name="estadoFuncaoTransitoria" value="funcaoDispensa">
+                    <label for="dispensaFuncao">Dispensa da função</label>
+                    <br>
+                    <div id="campoAdicionalDispensaFuncao" class="hidden">
+                        <br>
+                        <label for="DispensadoDaFuncao">Dispensado de:</label>
+                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        <select id="DispensadoDaFuncao" name="primeiraFuncao" class="campo60">
+                            <?php foreach ($funcoes as $funcao): ?>
+                            <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <br><br>
+                        <label for="exercerouResp">Exercia ou Respondia:</label>
+                        <select id="exercerouResp" name="responderOuExercer" class="campo50">
+                        <option value="responder pela">Responder</option>
+                        <option value="exercer a">Exercer</option>
+                        </select>
+                        <br><br>
+                        <label for="motivoDispensa">Motivo*:</label>
+                        <select id="motivoDispensa" name="motivoDispensadoFuncao" class="campo70">
+                        <option value="null">Sem motivo (apenas substituiu temporariamente)</option>    
+                        <option value=", por ter entrado em gozo de férias">Início de férias</option>
+                        <option value=", por ter entrado em gozo de dispensa como recompensa">Início dispensa como recompensa</option>
+                        <option value=", por ter entrado em gozo de instalação">Início de instalação</option>
+                        <option value=", por ter assumido a função de (especificar a função aqui)">Assumiu outra função</option>
+                        </select><br>
+                        <span style='font-size:15px; font-style: italic;'><i>*selecione o motivo apenas se:<br>
+                            1- o militar está deixando de exercer temporariamente a(s) função(ões)<br>
+                            2- o militar está deixando de assumir definitivamente-<br>
+                            (Foi dispensado da(s) função(ões) sem passagem com contagem de prazo)</i>
+                        </span>
+                        <br><br>
+                        <label for="DispensadoDaSegundaFuncao">Se tinha uma segunda função selecione-a:</label><br><br>
+                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        <select id="DispensadoDaSegundaFuncao" name="segundaFuncao" class="campo70">
+                            <option value="null">Não</option>
+                            <?php foreach ($funcoes as $funcao): ?>
+                            <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <br><br>
+                        <label for="exercerouResp2">Informe se estava exercendo ou respondendo:</label>
+                        <br><br>
+                        <select id="exercerouResp2" name="respondendoOuExercendoSegundaFuncao" class="campo70">
+                        <option value="null">Selecione caso tenha 2ª Função</option>
+                        <option value="responder pela">Responder</option>
+                        <option value="exercer">Exercer</option>
+                        </select>
+                        <div class="linha-horizontal-entre-campos"></div>
+                    </div>
+                <input type="radio" id="funcaoSubstituicaoTemporaria" name="estadoFuncaoTransitoria" value="substituicaoTemporaria">
+                <label for="funcaoSubstituicaoTemporaria">Substituição temporária</label>
+                <br>
+                    
+                <div id="campoAdicionalFuncaoSubstTemporaria" class="hidden">
+                        <br>
+                        <label for="nomefuncaoSubstTemp">Substituirá o(a):</label>
+                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        <select id="nomefuncaoSubstTemp" name="qualFuncaoSubstituira" class="campo60">
+                            <?php foreach ($funcoes as $funcao): ?>
+                            <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
+                            <?php endforeach; ?>
+                        <select>
+                        <div class="linha-horizontal-entre-campos"></div>
+                </div>
+                <input type="radio" id="reassunçãoFuncao" name="estadoFuncaoTransitoria" value="reassuncaoFuncao">
+                <label for="reassunçãoFuncao">Reassunção de Função</label>
+
+                <div id="campoAdicionalReassuncaoFuncao" class="hidden">
+                        <br>
+                        <label for="nomefuncaoreassumindo">Reassume:</label>
+                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        <select id="nomefuncaoreassumindo" name="reassumiufuncao1" class="campo70">
+                            <?php foreach ($funcoes as $funcao): ?>
+                            <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
+                            <?php endforeach; ?>
+                        <select><br><br>
+                        <label for="nomesegundafuncaoreassumindo">Reassume Outra(?)*:</label>
+                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        <select id="nomesegundafuncaoreassumindo" name="reassumiufuncao2" class="campo50">
+                            <option value="null">Não</option>
+                            <?php foreach ($funcoes as $funcao): ?>
+                            <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
+                            <?php endforeach; ?>
+                        <select>
+                        </div>
+                        <div class="linha-horizontal"></div>
+                        <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                </div>
+                <!-- 0.3 
+                Campos Referente a TORNAR SEM EFEITO 
+                Campos Referente a TORNAR SEM EFEITO -->
+                <div id="camposAdicionaisTornarSemEfeito" class="hidden">
+                    <!-- Início dos tipos de nota referente a função transitoria -->
+                    <input type="radio" id="TornosemEfeitoApresentacao" name="semEfeito" value="semEfeitoApresentação">
+                    <label for="TornosemEfeitoApresentacao">Tornar sem efeito Apresentação</label>
+                    <br>
+                    <input type="radio" id="TornosemEfeitogenerico" name="semEfeito" value="semEfeitoGenerico">
+                    <label for="TornosemEfeitogenerico">Tornar sem efeito Genérico</label>
+                    
+                    <div id="campoAdicionalSemEfeitoApresentação" class="hidden"><!-- Inicio opções exclusivas pra tornar sem efeito apresentação -->
+                        <div class="linha-horizontal-entre-campos"></div>
+                        <br>
+                        <label for="tipoAprSemEfeito">Tipo da apresentação que está tornando sem efeito:</label>
+                            <select id="tipoAprSemEfeito" name="tiposemEfeitoApresent" class="campo100">
+                                <option value="null">Selecione</option>
+                                <option value=", por término de 30 dias de férias, referente a ">Apresentação por término de 30 dias de férias</option>
+                                <option value=", por término da 1ª parcela de 15 dias de férias, referente a ">Térm da 1ª parcela de 15 dias de férias</option>
+                                <option value=", por término da 2ª parcela de 15 dias de férias, referente a ">Térm da 2ª parcela de 15 dias de férias</option>
+                                <option value=", por término da 1ª parcela de 10 dias de férias, referente a ">Térm da 1ª parcela de 10 dias de férias</option>
+                                <option value=", por término da 2ª parcela de 10 dias de férias, referente a ">Térm da 2ª parcela de 10 dias de férias</option>
+                                <option value=", por término da 3ª parcela de 10 dias de férias, referente a ">Térm da 3ª parcela de 10 dias de férias</option>
+                                <option value=", por término de transmissão do Cargo e encargos da função de ">Térm da Transmissão do Cargo e encargos (s/ carga)</option>
+                                <option value=", por término de recebimento do Cargo e encargos da função de ">Térm da Recebimento do Cargo e encargos (s/ carga)</option>
+                                <option value=", por término da passagem de material, transmissão de encargos e valores da função de ">Térm da Transmissão de material, encargos e valores</option>
+                                <option value=", por término da recebimento de material, de encargos e valores da função de ">Térm do Recebimento de material, encargos e valores</option>
+                                <option value=", por término da passagem de material e transmissão de valores da função de ">Térm da Passagem de Material e Valores</option>
+                                <option value=", por término do recebimento de material e dos valores da função de ">Térm do Recebimento do Material e Valores</option>
+                                <option value=", por término de dispensa como recompensa Cmt Btl">Térm Dispensa Recompensa Cmt Btl</option>
+                                <option value=", por término de dispensa como recompensa do SCmt Btl">Térm Dispensa Recompensa SCmt Btl</option>
+                                <option value=", por término de dispensa como recompensa do Cmt 1ª Cia Fuz Bld">Térm de Dispensa Recompensa do Cmt 1ª Cia Fuz Bld</option>
+                                <option value=", por término de dispensa como recompensa do Cmt 2ª Cia Fuz Bld">Térm de Dispensa Recompensa do Cmt 2ª Cia Fuz Bld</option>
+                                <option value=", por término de dispensa como recompensa do Cmt 3ª Cia Fuz Bld">Térm de Dispensa Recompensa do Cmt 3ª Cia Fuz Bld</option>
+                                <option value=", por término de dispensa como recompensa do Cmt 4ª Cia Fuz Bld">Térm de Dispensa Recompensa do Cmt 4ª Cia Fuz Bld</option>
+                                <option value=", por término de dispensa como recompensa do Cmt Cia C Ap">Térm de Dispensa Recompensa do Cmt Cia C Ap</option>
+                                <option value=", por término de dispensa como recompensa do Instr Ch NPOR">Térm de Dispensa Recompensa do Instr Ch NPOR</option>
+                                <option value=", por término de dispensa como recompensa do do Reg B Mus">Térm de Dispensa Recompensa do Reg B Mus</option>
+                                <option value=", por término de dispensa para desconto em férias">Término de Dispensa para Desconto em Férias</option>
+                                <option value=", por término de instalação">Apresentação por término de Instalação</option>
+                                <option value=", por término de trânsito">Apresentação por término de Trânsito</option>
+                                <option value=", por término de núpcias">Apresentação por término de Núpcias </option>
+                                <option value=", por término de luto">Apresentação por término de Luto </option>                          
+                            </select>
+                        <br>
+                        <br>
+                        <label for="anoDasFeriasSemEfeito">Férias referente a*:</label>
+                        <?php $anos = Formatacoes::pegarAnosAnterioresAtualEPosteriores() ?>
+                        <select id="anoDasFeriasSemEfeito" name="anoFeriasApresentacaoSemEfeito" class="campo50">
+                            <option value="null">Não refere-se a férias!</option>    
+                            <?php foreach ($anos as $ano): ?>
+                            <option value="<?php echo "$ano"; ?>">
+                                <?php echo "$ano"; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <br> <br>                          
+                        <label for="semEfeitoRefFuncao">Função que se refere*:</label>
+                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        <select id="semEfeitoRefFuncao" name="funcaoqueSeRefAprSemEfeito" class="campo50">
+                            <option value="null">Não refere-se a funções!</option>     
+                            <?php foreach ($funcoes as $funcao): ?>
+                            <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <br><br>
+                        <label for="data_apr_tornando_sem_efeito"><b>Data para tornar s/efeito</b></label>
+                        <!-- Caixa tipo data para seleção do dia de referência -->
+                        <input type="date" name="data_apr_sem_efeito" id="data_apr_tornando_sem_efeito">
+                        <br>
+                        <span style='font-size:15px; font-style: italic;'><i>*Refere-se ao dia da apresentação que queremos tornar sem efeito:<br>
+                                1- encontramos essa informação na própria nota que queremos torar sem efeito<br>
+                                2- logo na sentença: "Apresentou-se, em XX MÊS XX" (Essa data que deve ser selecionada no campo data acima)<br></i>
+                        </span>
+                        <br>
+                        <label for="motivoSemEfeito">Motivo*:</label>
+                            <select id="motivoSemEfeito" name="motivoTornandoSemEfeito" class="campo70">
+                                <option value="null">Porque está tornando sem efeito?</option>    
+                                <option value=", por ter sido publicado erroneamente">Por ter sido publicado errado</option>
+                                <option value=", por ter sido publicado duas vezes">por ter sido publicado duas vezes</option>
+                                <option value=", (digite aqui)">Outro</option>                                
+                            </select>
+                    </div><!--Fim campo adicional para tornar sem efeito nota de apresentação-->
+
+                    <div class="linha-horizontal-entre-campos"></div>
+
+                    <label for="nrBiConstPub">Nr do BI que consta a publicação:</label>
+                    <select id="nrBiConstPub" name="nrBIConstPub" class="campo30">
+                        <option value='null'>Selecione</option>
+                        <?php
+                        for ($i = 1; $i <= 250; $i++) {
+                            echo "<option value=\"$i\">BI Nr $i" . "</option>";
+                        }
+                        ?>
+                    </select>
+                    <br><br>
+                    <label for="data_bi_publicou"><b>BI:</label>
+                    <!-- Caixa tipo data para seleção do dia de referência -->
+                    <input type="date" name="data_bi_pub" id="data_bi_publicou">
+                    <br>
+                    <span style='font-size:15px; font-style: italic;'><i>*Refere-se a data do BI que conta a publicação.</i></span>
+                    <br><br>
+                    <label for="nrPagBI">Número da Página do BI:</label>
+                        <select id="nrPagBI" name="nrPagBIsEfeito" class="campo40">
+                        <option value='null'>Selecione</option>
+                        <?php
+                        for ($i = 1; $i <= 3000; $i++) {
+                            echo "<option value=\"$i\">Página $i" . "</option>";
+                        }
+                        ?>
+                    </select>
+                    <br>
+                    <div class="linha-horizontal"></div>
+                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                </div>
+                
+                <!-- 0.4 
+                Campos Referente a Mudança no plano de férias
+                Campos Referente a Mudança no plano de férias
+                Campos Referente a Mudança no plano de férias -->
+
+                <div id="camposAdicionaisMudancaPF" class="hidden">
+
+                    <!--REFERE-SE AO ANO DAS FÉRIAS, INDEPENDENTE DA MUDANÇA O CAMARADA TEM QUE SELECIONAR UM ANO DESTE-->
+                    <label for="anoFeriasMudanca">Férias referente a:</label>
+                        <?php $anos = Formatacoes::pegarAnosAnterioresAtualEPosteriores() ?>
+                        <select id="anoFeriasMudanca" name="anoFeriasMudanca" class="campo50">
+                            <option value="Null">Selecione</option>
+                            <?php foreach ($anos as $ano): ?>
+                            <option value="<?php echo "$ano"; ?>"><?php echo "$ano"; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    
+                    <div class="linha-horizontal-entre-campos"></div>
+                    
+                    <div class="inputBox">
+                        <label for="nrDiexSolicitacao" class="labelInput">Nr do documento:</label>
+                        <input type="text" id="nrDiexSolicitacao" name="nrDiexSolicitacao" class="inputUser" placeholder="Ex: 01-1ª Cia/13º BIB">
+                    </div>
+                    <span style='font-size:15px; font-style: italic;'><i>*Colocar como consta no DIEx, por exemplo: "01-1ª Cia/13º BIB"</i>
+                    </span>
+                    <div class="linha-horizontal-entre-campos"></div>
+
+                    <div class="inputBox">
+                        <label for="nrNUP" class="labelInput">Nr Único de Protocolo (NUP/EB):</label>
+                        <input type="text" id="nrNUP" name="nrNUP" class="inputUser" placeholder="Ex: 64074.000421/2024-99">
+                    </div>
+                    <span style='font-size:15px; font-style: italic;'><i>*NUP/EB que consta no documento, Ex: "64074.000421/2024-99"</i>
+                    </span>
+
+                    <div class="linha-horizontal-entre-campos"></div>
+                    
+                    <label for="data_do_DIEx">Data do DIEx:</label>
+                        <!-- Caixa tipo data -->
+                    <input type="date" id="data_do_DIEx" name="data_do_DIEx">
+                    
+                    <div class="linha-horizontal-entre-campos"></div>
+
+                    <label for="quemSolicitaAMudanca">Quem solicitou a mudança:</label>
+                    <select id="quemSolicitaAMudanca" name="solicitanteMudanca" class="campo50">
+                        <option value="null">Selecione</option>
+                        <option value="Cmt Btl">O Cmt Btl</option>
+                        <option value="SCmt Btl">O SCmt Btl</option>
+                        <option value="Fisc Adm">O Fisc Adm</option>
+                        <option value="Ch 1ª Seç">O Ch 1ª Seç</option>
+                        <option value="Ch 2ª Seç">O Ch 2ª Seç</option>
+                        <option value="Ch 3ª Seç">O Ch 3ª Seç</option>
+                        <option value="Ch 4ª Seç">O Ch 4ª Seç</option>
+                        <option value="Cmt 1ª Cia Fuz Bld">O Cmt 1ª Cia Fuz Bld</option>
+                        <option value="Cmt 2ª Cia Fuz Bld">O Cmt 2ª Cia Fuz Bld</option>
+                        <option value="Cmt 3ª Cia Fuz Bld">O Cmt 3ª Cia Fuz Bld</option>
+                        <option value="Cmt 4ª Cia Fuz Bld">O Cmt 4ª Cia Fuz Bld</option>
+                        <option value="Cmt Cia C Ap">O Cmt Cia C Ap</option>
+                        <option value="Instr Ch NPOR">O Instr Ch NPOR</option>
+                        <option value="Reg B Mus">O Reg B Mus</option>
+                        <option value="[Digite aqui]">Outro Ch Seç/Cmt SU</option>
+                    </select>
+
+                    <div class="linha-horizontal"></div>
+                    <!-- Início dos tipos de nota referente a mudança do Plano de Férias -->
+
+                    <!-- APENAS MUDANÇA DO DIA DE INÍCIO, INDEPENDENTE SE É 30, 15 OU 10 DIAS -->
+                    <input type="radio" id="mudancaPF30_30-UMAPARCD10-UMAPARCD15" name="mudancaPF" value="mudancaParcelaUnica30P30-UMAPARCD10-UMAPARCD15">
+                    <label for="mudancaPF30_30-UMAPARCD10-UMAPARCD15">Mudança do início das férias.</label>
+                    <br>
+                    <span style='font-size:15px; font-style: italic;'><i>*Apenas vai mudar o período ou a data de início no mesmo
+                    período. <br> NÃO MUDA o parcelamento das férias.</i>
+                    </span>
+                    <br><br>
+                    <!-- DE UMA DE 30 PARA 2 DE 15 -->
+                    <input type="radio" id="mudancaPF30_2D15" name="mudancaPF" value="mudancaParcelaUnica30P2D15">
+                    <label for="mudancaPF30_2D15">De 30 dias corridos &raquo;&raquo; 2 Prcl 15 dias.</label>
+                    <br><br>
+                    <!-- DE 30 PARA 3 DE 10 -->
+                    <input type="radio" id="mudancaPF30_3D10" name="mudancaPF" value="mudanca30P3D10">
+                    <label for="mudancaPF30_3D10">De 30 dias corridos &raquo;&raquo; 3 Prcl de 10 dias.</label>
+                    <br><br>
+                    <!-- DE 2 DE 15 PARA UMA DE 30 -->
+                    <input type="radio" id="mudancaPF2D15_30" name="mudancaPF" value="mudanca2D15P30">
+                    <label for="mudancaPF2D15_30">De 2 Prcl 15 dias &raquo;&raquo; 30 dias corridos.</label>
+                    <br><br>
+                    <!-- DE 2 DE 15 PARA 2 DE 15 COM DATAS DIFERENTES -->
+                    <input type="radio" id="mudancaPF2D15_2D15DIFF" name="mudancaPF" value="mudanca2D15P2D15DIFF">
+                    <label for="mudancaPF2D15_2D15DIFF">De 2 Prcl 15 &raquo;&raquo; 2 Prcl 15 DIFERENTES.</label>
+                    <br><br>
+                    <!-- DE 2 de 15 PARA 3 DE 10 -->
+                    <input type="radio" id="mudancaPF2D15_3D10" name="mudancaPF" value="mudanca2D15_3D10">
+                    <label for="mudancaPF2D15_3D10">De 2 Prcl 15 dias &raquo;&raquo; 3 Prcl de 10 dias.</label>
+                    <br><br>
+                    <!-- DE 3 DE 10 PARA 30-->
+                    <input type="radio" id="mudancaPF3D10_30" name="mudancaPF" value="mudanca3D10P30">
+                    <label for="mudancaPF3D10_30">De 3 Prcl de 10 dias &raquo;&raquo; Prcl única de 30 dias.</label>
+                    <br><br>
+                    <!-- DE 3 DE 10 PARA 3 DE 10 DIFF-->
+                    <input type="radio" id="mudancaPF3D10_3D10DIFF" name="mudancaPF" value="mudanca3D10P3D10DIFF">
+                    <label for="mudancaPF3D10_3D10DIFF">De 3 Prcl de 10 &raquo;&raquo; 3 Prcl de 10 DIFERENTES.</label>
+                    <br><br>
+                    <!-- Final da opções possíveis-->
+                    
+                    <!-- início dos campos adicionais referente a cada opção acima -->
+                    
+                    <!-- APENAS MUDANÇA DO DIA DE INÍCIO, INDEPENDENTE SE É 30, 15 OU 10 DIAS -->
+                    <div id="campoAdicionalmudancaApenasDeDia" class="hidden">
+                        <div class="linha-horizontal-entre-campos"></div>
+                        <label for="mudarDiaParc">De qual parcela:</label>
+                            <select id="mudarDiaParc" name="mudarDiaParc301510" class="campo50">
+                                <option value="null">Selecione</option>
+                                <option value="Parcela Única">Parcela única (30 dias)</option>
+                                <option value="da 1ª parcela de 15 (quinze) dias de férias">1ª Parcela de 15</option>
+                                <option value="da 2ª parcela de 15 (quinze) dias de férias">2ª Parcela de 15</option>
+                                <option value="da 1ª parcela de 10 (dez) dias de férias">1ª Parcela de 10</option>
+                                <option value="da 2ª parcela de 10 (dez) dias de férias">2ª Parcela de 10</option>
+                                <option value="da 3ª parcela de 10 (dez) dias de férias">3ª Parcela de 10</option>                          
+                            </select>
+                        <br>
+                        <br>
+                        <label for="data_publicada_mudanca_dia">Data que foi publicada: </label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_mudanca_dia" name="data_publicada_mudanca_dia">
+                        <br><br>
+                        <span style='font-size:15px; font-style: italic;'><i>*Refere-se a inclusão no plano de 
+                            férias do militar que já foi publicada, NÃO A DATA DO BI, NÃO A DATA.</i>
+                        </span>
+                        <br><br>
+                        <label for="data_solicitada_mudanca_dia">Data Solicitada: </label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_mudanca_dia" name="data_solicitada_mudanca_dia">
+                        <br><br>
+                        <span style='font-size:15px; font-style: italic;'><i>*Refere-se a data requerida pelo militar.</i>
+                        </span>
+                    </div>
+
+                    <!-- DE UMA DE 30 PARA 2 DE 15 -->
+                    <div id="campoAdicionalmudancaPF30_2D15" class="hidden">
+                        <div class="linha-horizontal-entre-campos"></div>
+                        <label for="data_publicada_mudanca_PF30_2D15">Data que foi publicada: </label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_mudanca_PF30_2D15" name="data_publicada_mudanca_PF30_2D15">
+                        <br><br>
+                        <span style='font-size:15px; font-style: italic;'><i>*Refere-se a inclusão no plano de 
+                            férias do militar que já foi publicada, NÃO A DATA QUE O BI FOI PUBLICADO.</i>
+                        </span>
+
+                        <br><br>
+                        <label for="data_solicitada_mudanca_PF30_2D15-1">Data solicitada (1ª prcl de 15 dias): </label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_mudanca_PF30_2D15-1" name="data_solicitada_mudanca_PF30_2D15-1">
+                        <br><br>
+
+                        <label for="data_solicitada_mudanca_PF30_2D15-2">Data solicitada (2ª prcl de 15 dias): </label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_mudanca_PF30_2D15-2" name="data_solicitada_mudanca_PF30_2D15-2">
+                        <br><br>
+                    </div>
+
+
+                    <!-- DE 2 DE 15 PARA UMA DE 30 -->
+                    <div id="campoAdicionalmudancaPF2D15_30" class="hidden">
+                        <div class="linha-horizontal-entre-campos"></div>
+                        <label for="data_publicada_mudanca_PF2D15_30-1">Data publicada (1ª prcl de 15 dias) </label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_mudanca_PF2D15_30-1" name="data_publicada_mudanca_PF2D15_30-1">
+                        <br><br>
+                        
+                        <label for="data_publicada_mudanca_PF2D15_30-2">Data publicada (2ª prcl de 15 dias) </label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_mudanca_PF2D15_30-2" name="data_mudanca_PF2D15_30-2">
+                        <br><br>
+                        <span style='font-size:15px; font-style: italic;'><i>*Ambas as datas referem-se a inclusão no plano de 
+                            férias do militar que já foram publicadas.</i>
+                        </span>
+                        <br><br>
+                        <label for="data_solicitada_mudanca_PF2D15_30">Data solicitada (30 dias corridos): </label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_mudanca_PF2D15_30" name="data_solicitada_mudanca_PF2D15_30">
+                        <br><br>
+                    </div>
+                    
+                    <!-- DE 2 DE 15 PARA 2 DE 15 COM DATAS DIFERENTES -->
+                    <div id="campoAdicionalPF2D15_2D15DIFF" class="hidden">
+                        <div class="linha-horizontal-entre-campos"></div>
+                        <label for="data_publicada_PF2D15_2D15DIFF-1">Data publicada (1ª prcl de 15 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_PF2D15_2D15DIFF-1" name="data_publicada_PF2D15_2D15DIFF-1">
+                        <br><br>
+                        
+                        <label for="data_publicada_PF2D15_2D15DIFF-2">Data publicada (2ª prcl de 15 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_PF2D15_2D15DIFF-2" name="data_publicada_PF2D15_2D15DIFF-2">
+                        <br><br>
+                        <span style='font-size:15px; font-style: italic;'><i>*Ambas as datas referem-se a inclusão no plano de 
+                            férias do militar que já foram publicadas.</i>
+                        </span>
+                        <br><br>
+                        <label for="data_solicitada_PF2D15_2D15DIFF-1">Data solicitada (1ª prcl de 15 dias):</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_PF2D15_2D15DIFF-1" name="data_solicitada_PF2D15_2D15DIFF-1">
+                        <br><br>
+
+                        <label for="data_solicitada_PF2D15_2D15DIFF-2">Data solicitada (2ª prcl de 15 dias):</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_PF2D15_2D15DIFF-2" name="data_solicitada_PF2D15_2D15DIFF-2">
+                        <br><br>
+                    </div>
+                    
+                    <!-- DE 30 PARA 3 DE 10 -->
+                    <div id="campoAdicionalPF30_3D10" class="hidden">
+                        <div class="linha-horizontal-entre-campos"></div>
+                        <label for="data_publicada_PF30_3D10">Data publicada (30 dias):</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_PF30_3D10" name="data_publicada_PF30_3D10">
+                        <br><br>
+                        <span style='font-size:15px; font-style: italic;'><i>*Refere-se a inclusão no plano de 
+                            férias do militar que já foi publicada.</i>
+                        </span>
+                        <br><br>
+                        
+                        <label for="data_solicitada_PF30_3D10_1">Data solicitada (1ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_PF30_3D10_1" name="data_solicitada_PF30_3D10_1">
+                        <br><br>
+
+                        <label for="data_solicitada_PF30_3D10_2">Data solicitada (2ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_PF30_3D10_2" name="data_solicitada_PF30_3D10_2">
+                        <br><br>
+
+                        <label for="data_solicitada_PF30_3D10_3">Data solicitada (3ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_PF30_3D10_3" name="data_solicitada_PF30_3D10_3">
+                        <br><br>
+                    </div>
+                    <!-- DE 3 DE 10 PARA 30-->
+                    <div id="campoAdicionalPF3D10_30" class="hidden">
+                        <div class="linha-horizontal-entre-campos"></div>
+                        <label for="data_publicada_PF3D10_1">Data publicada (1ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_PF3D10_1" name="data_publicada_PF3D10_1">
+                        <br><br>
+
+                        <label for="data_publicada_PF3D10_2">Data publicada (2ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_PF3D10_2" name="data_publicada_PF3D10_2">
+                        <br><br>
+
+                        <label for="data_publicada_PF3D10_3">Data publicada (3ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_PF3D10_3" name="data_publicada_PF3D10_3">
+                        <br><br>
+                        <span style='font-size:15px; font-style: italic;'><i>*Ambas as datas referem-se a inclusão no plano de 
+                            férias do militar que já foram publicadas.</i>
+                        </span>
+                        <br><br>
+                        
+                        <label for="data_solicitada_PF3D10_30">Data solicitada (30 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_PF3D10_30" name="data_solicitada_PF3D10_30">
+                        <br><br>
+                    </div>
+                    <!-- DE 2 DE 15 PARA 3 DE 10-->
+                    <div id="campoAdicionalPF2D15_3D10" class="hidden">
+                        <div class="linha-horizontal-entre-campos"></div>
+                        <label for="data_publicada_PF2D15_3D10_1">Data publicada (1ª prcl de 15 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_PF2D15_3D10_1" name="data_publicada_PF2D15_3D10_1">
+                        <br><br>
+
+                        <label for="data_publicada_PF2D15_3D10_2">Data publicada (2ª prcl de 15 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_PF2D15_3D10_2" name="data_publicada_PF2D15_3D10_2">
+                        <br><br>
+
+                        <span style='font-size:15px; font-style: italic;'><i>*Ambas as datas referem-se a inclusão no plano de 
+                            férias do militar que já foram publicadas.</i>
+                        </span>
+                        <br><br>
+                        <label for="data_solicitada_PF2D15_3D10_1">Data solicitada (1ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_PF2D15_3D10_1" name="data_solicitada_PF2D15_3D10_1">
+                        <br><br>
+
+                        <label for="data_solicitada_PF2D15_3D10_2">Data solicitada (2ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_PF2D15_3D10_2" name="data_solicitada_PF2D15_3D10_2">
+                        <br><br>
+
+                        <label for="data_solicitada_PF2D15_3D10_3">Data solicitada (3ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_PF2D15_3D10_3" name="data_solicitada_PF2D15_3D10_3">
+                        <br><br>
+                    </div>
+                        
+                    
+
+                    <div id="campoAdicionalPF3D10_3D10DIFF" class="hidden">
+                        <div class="linha-horizontal-entre-campos"></div>
+                        <label for="data_publicada_PF3D10_1">Data publicada (1ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_PF3D10_1" name="data_publicada_PF3D10_1">
+                        <br><br>
+
+                        <label for="data_publicada_PF3D10_2">Data publicada (2ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_PF3D10_2" name="data_publicada_PF3D10_2">
+                        <br><br>
+
+                        <label for="data_publicada_PF3D10_3">Data publicada (3ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_publicada_PF3D10_3" name="data_publicada_PF3D10_3">
+                        <br><br>
+                        <span style='font-size:15px; font-style: italic;'><i>*Ambas as datas referem-se a inclusão no plano de 
+                            férias do militar que já foram publicadas.</i>
+                        </span>
+                        <br><br>
+                        <label for="data_solicitada_PF3D10_1">Data solicitada (1ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_PF3D10_1" name="data_solicitada_PF3D10_1">
+                        <br><br>
+
+                        <label for="data_solicitada_PF3D10_2">Data solicitada (2ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_PF3D10_2" name="data_solicitada_PF3D10_2">
+                        <br><br>
+
+                        <label for="data_solicitada_PF3D10_3">Data solicitada (3ª prcl de 10 dias)</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_solicitada_PF3D10_3" name="data_solicitada_PF3D10_3">
+                        <br><br>
+                    </div>
+                    <div class="linha-horizontal"></div>
+                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                </div>
+
+                <!-- 0.5 #############################################################
+                Campos Referente a Afastamentos
+                Campos Referente a Afastamentos
+                Campos Referente a Afastamentos -->
+
+                <div id="camposAdicionaisAfastamento" class="hidden">
+
+                    <!-- Férias -->
+                    <!-- 30 dias seguidos de Férias-->
+                    <input type="radio" id="ferias30dias" name="afastamentos" value="ferias30dias">
+                    <label for="ferias30dias">30 dias seguidos</label>
+                    <br><br>
+                    <!-- 1ª parcela de 15 dias de Férias-->
+                    <input type="radio" id="ferias1parcela15" name="afastamentos" value="ferias1parcela15">
+                    <label for="ferias1parcela15">1ª parcela de 15</label>
+                    <br><br>
+                    <!-- 2ª parcela de 15 dias de Férias-->
+                    <input type="radio" id="ferias2parcela15" name="afastamentos" value="ferias2parcela15">
+                    <label for="ferias2parcela15">2ª parcela de 15</label>
+                    <br><br>
+                    <!-- 1ª parcela de 10 dias de Férias-->
+                    <input type="radio" id="ferias1parcela10" name="afastamentos" value="ferias1parcela10">
+                    <label for="ferias1parcela10">1ª parcela de 10</label>
+                    <br><br>
+                    <!-- 2ª parcela de 10 dias de Férias-->
+                    <input type="radio" id="ferias2parcela10" name="afastamentos" value="ferias2parcela10">
+                    <label for="ferias2parcela10">2ª parcela de 10</label>
+                    <br><br>
+                    <!-- 3ª parcela de 10 dias de Férias-->
+                    <input type="radio" id="ferias3parcela10" name="afastamentos" value="ferias3parcela10">
+                    <label for="ferias3parcela10">3ª parcela de 10</label>
+                    <br><br>
+                    
+                    <!-- Caso selecionado alguma das opções acima, abre esse bloco para detalhamento -->
+                    <div id="campoAdicionalConcessaoFerias" class="hidden">
+                        <div class="linha-horizontal-entre-campos"></div>
+                        <label for="anoFerias">Referente a qual ano:</label>
+                            <select id="anoFerias" name="anoFerias" class="campo50">
+                            <option value="null">Selecione</option>
+                            <?php foreach ($anos as $ano): ?>
+                                <option value="<?php echo "$ano"; ?>"><?php echo "$ano"; ?></option>
+                            <?php endforeach; ?>                      
+                            </select>
+                        <br>
+                        <br>
+                        <label for="data_inicio_ferias">Data início:</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_inicio_ferias" name="data_inicio_ferias">
+                        <br><br>
+                    </div>
+
+                    <div class="linha-horizontal-entre-campos"></div>
+                    <!-- Dias restantes de Férias-->
+                    <input type="radio" id="feriasDiasRestantes" name="afastamentos" value="feriasDiasRestantes">
+                    <label for="feriasDiasRestantes">Dias restantes de férias</label>
+                    
+                    <!-- Caso selecionado o radio acima, abre esse bloco para detalhamento -->
+                    <div id="campoAdicionalConcessaoFeriasRestantes" class="hidden">
+                        <br>
+                        <label for="anoFeriasRestantes">Referente a qual ano:</label>
+                            <select id="anoFeriasRestantes" name="anoFeriasRestantes" class="campo50">
+                            <option value="null">Selecione</option>
+                            <?php foreach ($anos as $ano): ?>
+                                <option value="<?php echo "$ano"; ?>"><?php echo "$ano"; ?></option>
+                            <?php endforeach; ?>                      
+                            </select>
+
+                        <br><br>
+                        <label for="data_inicio_ferias_restantes">Data início:</label>
+                        <!-- Caixa tipo data -->
+                        <input type="date" id="data_inicio_ferias_restantes" name="data_inicio_ferias_restantes">
+                        
+                        <br><br>
+                        <label for="qtdeDiasRest">Quantidade de dias restantes:</label>
+                        <select id="qtdeDiasRest" name="qtdeDiasRest" class="campo30">
+                        <option value='null'>Selecione</option>
+                        <?php
+                        for ($i = 1; $i <= 29; $i++) {
+                            $numero = str_pad($i, 2, "0", STR_PAD_LEFT);
+                            echo "<option value=\"$numero\">$i dia" . ($i > 1 ? "s" : "") . "</option>";
+                        }
+                        ?>
+                    </select>
+                    <br><br>
+                    </div>
+                    <!-- Dispensa como Recompensa -->
+                    <!-- Do Cmt Cia -->
+                    <div class="linha-horizontal-entre-campos"></div>
+                    <input type="radio" id="dispensaCmtCia" name="afastamentos" value="dispensaCmtCia">
+                    <label for="dispensaCmtCia">Do Cmt Cia</label>
+                    
+
+                    <div id="campoAdicionaldispensaCmtCiaDetalhe" class="hidden">  
+                        <br>    
+                        <label for="data_inicio_dispensaCmtCia">Data início:</label>
+                        <input type="date" id="data_inicio_dispensaCmtCia" name="data_inicio_dispensaCmtCia">
+                        <br><br>
+                        <label for="numDiasDispensaCmtCia">Número de dias:</label>
+                        <select id="numDiasDispensaCmtCia" name="numDiasDispensaCmtCia" class="campo30">
+                            <option value="01">1 dia</option>
+                            <option value="02">2 dias</option>
+                            <option value="03">3 dias</option>
+                            <option value="04">4 dias </option>
+                        </select>
+                        <br><br>
+                        <label for="qualCmtSUBondoso">De qual Cmt SU:</label>
+                        <select id="qualCmtSUBondoso" name="qualCmtSUBondoso" class="campo50">
+                            <option value="Cmt 1ª Cia Fuz Bld">O Cmt 1ª Cia Fuz Bld</option>
+                            <option value="Cmt 2ª Cia Fuz Bld">O Cmt 2ª Cia Fuz Bld</option>
+                            <option value="Cmt 3ª Cia Fuz Bld">O Cmt 3ª Cia Fuz Bld</option>
+                            <option value="Cmt 4ª Cia Fuz Bld">O Cmt 4ª Cia Fuz Bld</option>
+                            <option value="Cmt Cia C Ap">O Cmt Cia C Ap</option>
+                            <option value="Instr Ch NPOR">O Instr Ch NPOR</option>
+                            <option value="Reg B Mus">O Reg B Mus</option>
+                        </select>
+                    </div>
+                    <br><br>
+                    
+                    <!-- Do SCmt Btl -->
+                    <input type="radio" id="dispensaSCmtBtl" name="afastamentos" value="dispensaSCmtBtl">
+                    <label for="dispensaSCmtBtl">Do SCmt Btl</label>
+                    <br><br>
+                    <!-- Dispensa como Recompensa do SCmt Btl -->
+                    <div id="campoAdicionaldispensaSCmtBtlDetalhe" class="hidden">
+                        <label for="data_inicio_dispensaSCmtBtl">Data início:</label>
+                        <input type="date" id="data_inicio_dispensaSCmtBtl" name="data_inicio_dispensaSCmtBtl">
+                        <br><br>
+                        <label for="numDiasDispensaSCmtBtl">Número de dias:</label>
+                        <select id="numDiasDispensaSCmtBtl" name="numDiasDispensaSCmtBtl" class="campo30">
+                            <option value="01">1 dia</option>
+                            <option value="02">2 dias</option>
+                            <option value="03">3 dias</option>
+                            <option value="04">4 dias</option>
+                        </select>
+                        <br><br>
+                    </div>
+
+
+                    <!-- Do Cmt Btl -->
+                    <input type="radio" id="dispensaCmtBtl" name="afastamentos" value="dispensaCmtBtl">
+                    <label for="dispensaCmtBtl">Do Cmt Btl</label>
+                    <br><br>
+
+                    <!-- Dispensa como Recompensa do Cmt Btl -->
+                    <div id="campoAdicionaldispensaCmtBtlDetalhe" class="hidden">
+                        <label for="data_inicio_dispensaCmtBtl">Data início:</label>
+                        <input type="date" id="data_inicio_dispensaCmtBtl" name="data_inicio_dispensaCmtBtl">
+                        <br><br>
+                        <label for="numDiasDispensaCmtBtl">Número de dias:</label>
+                        <select id="numDiasDispensaCmtBtl" name="numDiasDispensaCmtBtl" class="campo50">
+                            <option value="01">1 dia</option>
+                            <option value="02">2 dias</option>
+                            <option value="03">3 dias</option>
+                            <option value="04">4 dias</option>
+                            <option value="05">5 dias</option>
+                            <option value="06">6 dias</option>
+                            <option value="07">7 dias</option>
+                            <option value="08">8 dias</option>
+                        </select>
+                        <br><br>
+                    </div>
+                    <!-- Cmt 5ª Bda C Bld -->
+                    <input type="radio" id="dispensa5BdaCBld" name="afastamentos" value="dispensa5BdaCBld">
+                    <label for="dispensa5BdaCBld">Cmt 5ª Bda C Bld</label>
+                    <br><br>
+
+                    
+                    <!-- Dispensa como Recompensa do Cmt 5ª Brg -->
+                    <div id="campoAdicionaldispensaCmt5BgdaDetalhe" class="hidden">
+                        <label for="data_inicio_dispensaCmt5Bgda">Data início:</label>
+                        <input type="date" id="data_inicio_dispensaCmt5Bgda" name="data_inicio_dispensaCmt5Bgda">
+                        <br><br>
+                        <label for="numDiasDispensaCmt5Bgda">Número de dias:</label>
+                        <select id="numDiasDispensaCmt5Bgda" name="numDiasDispensaCmt5Bgda" class="campo40">
+                            <?php
+                            for ($i = 1; $i <= 30; $i++) {
+                                $numero = str_pad($i, 2, "0", STR_PAD_LEFT);
+                                echo "<option value=\"$numero\">$i dia" . ($i > 1 ? "s" : "") . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <br>
+                    </div>
+                    <div class="linha-horizontal-entre-campos"></div>
+                    <!-- Dispensa para Desconto em Férias -->
+                    <input type="radio" id="dispensaDescontoFerias" name="afastamentos" value="dispensaDescontoFerias">
+                    <label for="dispensaDescontoFerias">Dispensa para Desconto em Férias</label>
+                    <br><br>
+                    
+                    <!-- Div Oculta para detalhamento -->
+                    <div id="campoAdicionaldispensaDescontoFeriasDetalhe" class="hidden">
+                        <label for="data_inicio_dispensaDescontoFerias">Data início:</label>
+                        <input type="date" id="data_inicio_dispensaDescontoFerias" name="data_inicio_dispensaDescontoFerias">
+                        <br><br>
+                        <label for="numDiasDispensaDescontoFerias">Número de dias:</label>
+                        <select id="numDiasDispensaDescontoFerias" name="numDiasDispensaDescontoFerias" class="campo30">
+                            <option value="01">1 dia</option>
+                            <option value="02">2 dias</option>
+                            <option value="03">3 dias</option>
+                            <option value="04">4 dias</option>
+                            <option value="05">5 dias</option>
+                            <option value="06">6 dias</option>
+                            <option value="07">7 dias</option>
+                            <option value="08">8 dias</option>
+                        </select>
+
+                        <br><br>
+                        <label for="qtdeDiasRestantesFerias">Qtde dias restantes de Férias:</label>
+                        <select id="qtdeDiasRestantesFerias" name="qtdeDiasRestantesFerias" class="campo30">
+                            <?php
+                            for ($i = 1; $i <= 30; $i++) {
+                                $numero = str_pad($i, 2, "0", STR_PAD_LEFT);
+                                echo "<option value=\"$numero\">$i dia" . ($i > 1 ? "s" : "") . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <br><br>
+                        <label for="anoDispDescoFerias">Ano das Férias:</label>
+                        <?php $anosDispReco = Formatacoes::pegarAnosAnterioresAtualEPosteriores() ?>
+                        <select id="anoDispDescoFerias" name="anoDispDescoFerias" class="campo50">
+                        <option value="null">Selecione</option>
+                        <?php foreach ($anosDispReco as $anoDispReco): ?>
+                            <option value="<?php echo "$anoDispReco"; ?>"><?php echo "$anoDispReco"; ?></option>
+                        <?php endforeach; ?>
+                        </select>
+                        <br><br>
+                    </div>
+
+
+
+                    <!-- Instalação -->
+                    <input type="radio" id="instalacao" name="afastamentos" value="instalacao">
+                    <label for="instalacao">Instalação</label>
+                    <br><br>
+                    <!-- Instalação -->
+                    <div id="campoAdicionalinstalacaoDetalhe" class="hidden">
+                        <label for="data_inicio_instalacao">Data início:</label>
+                        <input type="date" id="data_inicio_instalacao" name="data_inicio_instalacao">
+                        <br><br>
+                        <label for="tipoInstalacao">Tipo:</label>
+                        <select id="tipoInstalacao" name="tipoInstalacao" class="campo50">
+                            <option value="solteiro">Solteiro (4 dias)</option>
+                            <option value="casado">Casado (10 dias)</option>
+                        </select>
+                        <br><br>
+                    </div>
+                    
+                    <!-- Trânsito -->
+                    <input type="radio" id="transito" name="afastamentos" value="transito">
+                    <label for="transito">Trânsito</label>
+                    <br><br>
+                    <!-- Trânsito -->
+                    <div id="campoAdicionaltransitoDetalhe" class="hidden">
+                        <label for="data_inicio_transito">Data início:</label>
+                        <input type="date" id="data_inicio_transito" name="data_inicio_transito">
+                        <br><br>
+                        <label for="tipoTransito">Tipo:</label>
+                        <select id="tipoTransito" name="tipoTransito" class="campo30">
+                            <option value="30 dias">30 dias</option>
+                            <option value="48 hrs">48 horas</option>
+                        </select>
+                        <br><br>
+                    </div>
+                    <!-- Núpcias -->
+                    <input type="radio" id="nupcias" name="afastamentos" value="nupcias">
+                    <label for="nupcias">Núpcias</label>
+                    <br><br>
+                    <!-- Núpcias -->
+                    <div id="campoAdicionalnupciasDetalhe" class="hidden">
+                        <label for="data_inicio_nupcias">Data início:</label>
+                        <input type="date" id="data_inicio_nupcias" name="data_inicio_nupcias">
+                        <br><br>
+                    </div>
+                    <!-- Luto -->
+                    <input type="radio" id="luto" name="afastamentos" value="luto">
+                    <label for="luto">Luto</label>
+                    <br><br>
+                    <!-- Luto -->
+                    <div id="campoAdicionallutoDetalhe" class="hidden">
+                        <label for="data_inicio_luto">Data início:</label>
+                        <input type="date" id="data_inicio_luto" name="data_inicio_luto">
+                        <br><br>
+                    </div>
+                    
+                    <div class="linha-horizontal"></div>
+                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                    <!-- Final da opções possíveis-->
+                    
+                </div>
+
+                <!-- FIM 5ª ROTINA -->
+
+                <!-- 0.6 #############################################################
+                Campos Referente a MUDANÇA DE FUNÇÃO
+                Campos Referente a MUDANÇA DE FUNÇÃO
+                Campos Referente a MUDANÇA DE FUNÇÃO -->
+
+                <div id="camposAdicionaisPassagemRecebFuncao" class="hidden">
+
+                    <!-- Passagem de Material, Transmissão de Encargos e de Valores -->
+                    <input type="radio" id="passagemMaterialEncargosValores" name="funcoes" value="passagemMaterialEncargosValores">
+                    <label for="passagemMaterialEncargosValores">Passagem de Material, Transmissão de Encargos e de Valores</label>
+                    <br><br>
+                    <!-- Detalhamento -->
+                    <div id="campoAdicionalpassagemMaterialEncargosValoresDetalhe" class="hidden">
+                        <label for="prazo_passagemMaterialEncargosValores">Prazo:</label>
+                        <select id="prazo_passagemMaterialEncargosValores" name="prazo_passagemMaterialEncargosValores" class="campo30">
+                            <option value="04">4 dias</option>
+                            <option value="10">10 dias</option>
+                            <option value="20">20 dias</option>
+                        </select>
+                        <br><br>
+                        <label for="funcao_passagemMaterialEncargosValores">Nome da Função:</label>
+                        <!-- O value e o texto de cada option serão a mesma função -->
+                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        <select id="funcao_passagemMaterialEncargosValores" name="funcao_passagemMaterialEncargosValores" class="campo60">
+                            <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
+                            <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
+                            <?php endforeach; ?>
+                        <select>
+                        <br><br>
+                        <label for="data_inicio_passagemMaterialEncargosValores">Data início:</label>
+                        <input type="date" id="data_inicio_passagemMaterialEncargosValores" name="data_inicio_passagemMaterialEncargosValores">
+                        <div class="linha-horizontal-entre-campos"></div>
+                        
+                    </div>
+
+                    <!-- Recebimento de Material, de Encargos e Valores - Concessão -->
+                    <input type="radio" id="recebimentoMaterialEncargosValores" name="funcoes" value="recebimentoMaterialEncargosValores">
+                    <label for="recebimentoMaterialEncargosValores">Recebimento de Material, de Encargos e Valores</label>
+                    <br><br>
+                    <!-- Detalhamento -->
+                    <div id="campoAdicionalrecebimentoMaterialEncargosValoresDetalhe" class="hidden">
+                        <label for="prazo_recebimentoMaterialEncargosValores">Prazo:</label>
+                        <select id="prazo_recebimentoMaterialEncargosValores" name="prazo_recebimentoMaterialEncargosValores" class="campo30">
+                            <option value="04">4 dias</option>
+                            <option value="10">10 dias</option>
+                            <option value="20">20 dias</option>
+                        </select>
+                        <br><br>
+                        <label for="funcao_recebimentoMaterialEncargosValores">Nome da Função:</label>
+                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        <select id="funcao_recebimentoMaterialEncargosValores" name="funcao_recebimentoMaterialEncargosValores" class="campo60">
+                        <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
+                            <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <br><br>
+                        <label for="data_inicio_recebimentoMaterialEncargosValores">Data início:</label>
+                        <input type="date" id="data_inicio_recebimentoMaterialEncargosValores" name="data_inicio_recebimentoMaterialEncargosValores">
+                        <div class="linha-horizontal-entre-campos"></div>
+                    </div>
+
+                    <!-- Passagem de Cargo e Encargos - prazo – concessão -->
+                    <input type="radio" id="passagemCargoEncargos" name="funcoes" value="passagemCargoEncargos">
+                    <label for="passagemCargoEncargos">Passagem de Cargo e Encargos</label>
+                    <br><br>
+                    <!-- Detalhamento -->
+                    <div id="campoAdicionalpassagemCargoEncargosDetalhe" class="hidden">
+                        <label for="prazo_passagemCargoEncargos">Prazo:</label>
+                        <select id="prazo_passagemCargoEncargos" name="prazo_passagemCargoEncargos" class="campo30">
+                            <option value="04">4 dias</option>
+                            <option value="10">10 dias</option>
+                            <option value="20">20 dias</option>
+                        </select>
+                        <br><br>
+                        <label for="funcao_passagemCargoEncargos">Nome da Função:</label>
+                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        <select id="funcao_passagemCargoEncargos" name="funcao_passagemCargoEncargos" class="campo60">
+                        <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
+                            <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <br><br>
+                        <label for="data_inicio_passagemCargoEncargos">Data início:</label>
+                        <input type="date" id="data_inicio_passagemCargoEncargos" name="data_inicio_passagemCargoEncargos">
+                        <div class="linha-horizontal-entre-campos"></div>
+                    </div>
+
+                    <!-- Recebimento de Cargo e Encargos - prazo – concessão -->
+                    <input type="radio" id="recebimentoCargoEncargos" name="funcoes" value="recebimentoCargoEncargos">
+                    <label for="recebimentoCargoEncargos">Recebimento de Cargo e Encargos</label>
+                    <br><br>
+                    <!-- Detalhamento -->
+                    <div id="campoAdicionalrecebimentoCargoEncargosDetalhe" class="hidden">
+                        <label for="prazo_recebimentoCargoEncargos">Prazo:</label>
+                        <select id="prazo_recebimentoCargoEncargos" name="prazo_recebimentoCargoEncargos" class="campo30">
+                            <option value="04">4 dias</option>
+                            <option value="10">10 dias</option>
+                            <option value="20">20 dias</option>
+                        </select>
+                        <br><br>
+                        <label for="funcao_recebimentoCargoEncargos">Nome da Função:</label>
+                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        <select id="funcao_recebimentoCargoEncargos" name="funcao_recebimentoCargoEncargos" class="campo60">
+                        <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
+                            <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <br><br>
+                        <label for="data_inicio_recebimentoCargoEncargos">Data início:</label>
+                        <input type="date" id="data_inicio_recebimentoCargoEncargos" name="data_inicio_recebimentoCargoEncargos">
+                        <div class="linha-horizontal-entre-campos"></div>
+                    </div>
+
+                    <!-- Passagem de material e valores - Concessão -->
+                    <input type="radio" id="passagemMaterialValores" name="funcoes" value="passagemMaterialValores">
+                    <label for="passagemMaterialValores">Passagem de material e valores</label>
+                    <br><br>
+                    <!-- Detalhamento -->
+                    <div id="campoAdicionalpassagemMaterialValoresDetalhe" class="hidden">
+                        <label for="prazo_passagemMaterialValores">Prazo:</label>
+                        <select id="prazo_passagemMaterialValores" name="prazo_passagemMaterialValores" class="campo30">
+                            <option value="04">4 dias</option>
+                            <option value="10">10 dias</option>
+                            <option value="20">20 dias</option>
+                        </select>
+                        <br><br>
+                        <label for="funcao_passagemMaterialValores">Nome da Função:</label>
+                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        <select id="funcao_passagemMaterialValores" name="funcao_passagemMaterialValores" class="campo60">
+                        <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
+                            <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <br><br>
+                        <label for="data_inicio_passagemMaterialValores">Data início:</label>
+                        <input type="date" id="data_inicio_passagemMaterialValores" name="data_inicio_passagemMaterialValores">
+                        <div class="linha-horizontal-entre-campos"></div>
+                    </div>
+
+                    <!-- Recebimento de material e valores - Concessão -->
+                    <input type="radio" id="recebimentoMaterialValores" name="funcoes" value="recebimentoMaterialValores">
+                    <label for="recebimentoMaterialValores">Recebimento de material e valores</label>
+                    <br><br>
+                    <!-- Detalhamento -->
+                    <div id="campoAdicionalrecebimentoMaterialValoresDetalhe" class="hidden">
+                        <label for="prazo_recebimentoMaterialValores">Prazo:</label>
+                        <select id="prazo_recebimentoMaterialValores" name="prazo_recebimentoMaterialValores" class="campo30">
+                            <option value="04">4 dias</option>
+                            <option value="10">10 dias</option>
+                            <option value="20">20 dias</option>
+                        </select>
+                        <br><br>
+                        <label for="funcao_recebimentoMaterialValores">Nome da Função:</label>
+                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        <select id="funcao_recebimentoMaterialValores" name="funcao_recebimentoMaterialValores" class="campo60">
+                        <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
+                            <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <br><br>
+                        <label for="data_inicio_recebimentoMaterialValores">Data início:</label>
+                        <input type="date" id="data_inicio_recebimentoMaterialValores" name="data_inicio_recebimentoMaterialValores">
+                        <div class="linha-horizontal-entre-campos"></div>
+                    </div>
+
+                    <!-- Assunção de função -->
+                    <input type="radio" id="assuncaoFuncao" name="funcoes" value="assuncaoFuncao">
+                    <label for="assuncaoFuncao">Assunção de função</label>
+                    <br><br>
+                    <!-- Detalhamento -->
+                    <div id="campoAdicionalassuncaoFuncaoDetalhe" class="hidden">
+                        <label for="funcao_assuncaoFuncao">Nome da Função:</label>
+                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        <select id="funcao_assuncaoFuncao" name="funcao_assuncaoFuncao" class="campo60">
+                        <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
+                            <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <br><br>
+                        <label for="data_inicio_assuncaoFuncao">Data da Assunção:</label>
+                        <input type="date" id="data_inicio_assuncaoFuncao" name="data_inicio_assuncaoFuncao">
+                        <br><br>
+                        <label for="cumulativamente">Cumulativamente(?):</label>
+                        <select id="cumulativamente" name="cumulativamente" class="campo30">
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+
+                    </div>
+                    <div class="linha-horizontal"></div>
+                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                    <br><br>
+                    <span style='font-size:15px; font-style: italic;'><i>Sobre passagem de função:<br>
+                    1- utilizar 20 dias para encarregados de setor de material, encarregados de depósito de órgãos provedores, chefes de oficina e encarregados de setor de aprovisionamento.<br>
+                    2- utilizar 10 dias para OD, fiscais administrativos, comandantes de SU e encarregados de setor financeiro.<br>
+                    3- utilizar 4 dias para demais frações da OM.
+                    <br><br>
+                    Qual Passagem/Recebimento selecionar:
+                    <br><br>
+                    TERMO CORRETO QUANDO TEM CARGA E CARGO:<br>
+                    Passagem de material, transmissão de encargos e de valores<br>
+                    Recebimento de material, de encargos e valores
+                    <br><br>
+                    TERMO CORRETO É APENAS CARGO:<br>
+                    Passagem de Cargo e Encargos<br>
+                    Recebimento de Cargo e Encargos
+                    <br><br>
+                    TERMO CORRETO QUANDO TEM APENAS CARGA:<br>
+                    Passagem de material e valores<br>
+                    Recebimento de material e valores
+                    <br><br>
+                    Lembre-se de ao término da passagem e recebimento, apresentar os militares (Já consta uma rotina de apresentação para te ajudar nisso)</i></span>
+                </div>
+                <!-- FIM 6ª ROTINA -->
+                
+                <!-- 0.7 #############################################################
+                Campos Referente a Inclusao Plano Férias
+                Campos Referente a Inclusao Plano Férias
+                Campos Referente a Inclusao Plano Férias -->
+                <div id="camposAdicionaisInclusaoPlanFerias" class="hidden">
+
+                    <label for="anoDasFeriasInclusao">Férias Referente a:</label>
+                        <?php $anos = Formatacoes::pegarAnosAnterioresAtualEPosteriores() ?>
+                        <select id="anoDasFeriasInclusao" name="AnoFeriasInclusao" class="campo50">
+                        <option value="null">Selecione</option>
+                        <?php foreach ($anos as $ano): ?>
+                            <option value="<?php echo "$ano"; ?>"><?php echo "$ano"; ?></option>
+                        <?php endforeach; ?>
+                        </select>
+                    <div class="linha-horizontal-entre-campos"></div>
+                    <!-- Inclusão no Período de Férias (30 dias corridos) -->
+                    <input type="radio" id="inclusaoFerias30Dias" name="inclusaoferias" value="inclusaoFerias30Dias">
+                    <label for="inclusaoFerias30Dias">Inclusão no período de férias (30 dias corridos)</label>
+                    <br><br>
+                    <!-- Detalhamento -->
+                    <div id="campoAdicionalinclusaoFerias30DiasDetalhe" class="hidden">
+                        
+                        <label for="data_inicio_inclusaoFerias30Dias">Data de início:</label>
+                        <input type="date" id="data_inicio_inclusaoFerias30Dias" name="data_inicio_inclusaoFerias30Dias">
+                        <div class="linha-horizontal-entre-campos"></div>
+                    </div>
+                    
+                    <!-- Inclusão no Período de Férias (2 períodos de 15) -->
+                    <input type="radio" id="inclusaoFerias2x15Dias" name="inclusaoferias" value="inclusaoFerias2x15Dias">
+                    <label for="inclusaoFerias2x15Dias">Inclusão no período de férias (2 períodos de 15)</label>
+                    <br><br>
+                    <!-- Detalhamento -->
+                    <div id="campoAdicionalinclusaoFerias2x15DiasDetalhe" class="hidden">
+                        
+                        <label for="data_inicio1_inclusaoFerias2x15Dias">Data de início (Período 1):</label>
+                        <input type="date" id="data_inicio1_inclusaoFerias2x15Dias" name="data_inicio1_inclusaoFerias2x15Dias">
+                        <br><br>
+                        <label for="data_inicio2_inclusaoFerias2x15Dias">Data de início (Período 2):</label>
+                        <input type="date" id="data_inicio2_inclusaoFerias2x15Dias" name="data_inicio2_inclusaoFerias2x15Dias">
+                        <div class="linha-horizontal-entre-campos"></div>
+                    </div>
+
+                    <!-- Inclusão no Período de Férias (3 períodos de 10) -->
+                    <input type="radio" id="inclusaoFerias3x10Dias" name="inclusaoferias" value="inclusaoFerias3x10Dias">
+                    <label for="inclusaoFerias3x10Dias">Inclusão no período de férias (3 períodos de 10)</label>
+                    <br><br>
+                    <!-- Detalhamento -->
+                    <div id="campoAdicionalinclusaoFerias3x10DiasDetalhe" class="hidden">
+                        
+                        <label for="data_inicio1_inclusaoFerias3x10Dias">Data de início (Período 1):</label>
+                        <input type="date" id="data_inicio1_inclusaoFerias3x10Dias" name="data_inicio1_inclusaoFerias3x10Dias">
+                        <br><br>
+                        <label for="data_inicio2_inclusaoFerias3x10Dias">Data de início (Período 2):</label>
+                        <input type="date" id="data_inicio2_inclusaoFerias3x10Dias" name="data_inicio2_inclusaoFerias3x10Dias">
+                        <br><br>
+                        <label for="data_inicio3_inclusaoFerias3x10Dias">Data de início (Período 3):</label>
+                        <input type="date" id="data_inicio3_inclusaoFerias3x10Dias" name="data_inicio3_inclusaoFerias3x10Dias">
+                    </div>
+                    <div class="linha-horizontal"></div>
+                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                </div>
+
+                <!-- 0.8 #############################################################
+                Campos Referente a Referenciação de DIEx Genérico
+                Campos Referente a Referenciação de DIEx Genérico
+                Campos Referente a Referenciação de DIEx Genérico -->
+                <div id="camposAdicionaisRefDIEXGenerico" class="hidden">
+                    <label for="nrDiexSolicitacaoGenerico" class="labelInput">Nr do documento:</label>
+                    <input type="text" id="nrDiexSolicitacaoGenerico" name="nrDiexSolicitacaoGenerico" class="inputUser" placeholder="Ex: 01-1ª Cia/13º BIB">
+                    
+                    <span style='font-size:15px; font-style: italic;'><i>*Colocar como consta no DIEx, por exemplo: "01-1ª Cia/13º BIB"</i></span>
+                    <div class="linha-horizontal-entre-campos"></div>
+
+                    <div class="inputBox">
+                        <label for="nrNUPGenerico" class="labelInput">Nr Único de Protocolo (NUP/EB):</label>
+                        <input type="text" id="nrNUPGenerico" name="nrNUPGenerico" class="inputUser" placeholder="Ex: 64074.000421/2024-99">
+                    </div>
+                    <span style='font-size:15px; font-style: italic;'><i>*NUP/EB que consta no documento, Ex: "64074.000421/2024-99"</i></span>
+                    <div class="linha-horizontal-entre-campos"></div>
+
+                    <label for="data_do_DIEx_Generico">Data do DIEx:</label>
+                    <!-- Caixa tipo data -->
+                    <input type="date" id="data_do_DIEx_Generico" name="data_do_DIEx_Generico">
+                    <div class="linha-horizontal-entre-campos"></div>
+
+                    <label for="remetente">Remetente:</label>
+                    <select id="remetente" name="remetente" class="campo50">
+                        <option value="null">Selecione</option>
+                        <option value="Cmt Btl">O Cmt Btl</option>
+                        <option value="SCmt Btl">O SCmt Btl</option>
+                        <option value="Fisc Adm">O Fisc Adm</option>
+                        <option value="Ch 1ª Seç">O Ch 1ª Seç</option>
+                        <option value="Ch 2ª Seç">O Ch 2ª Seç</option>
+                        <option value="Ch 3ª Seç">O Ch 3ª Seç</option>
+                        <option value="Ch 4ª Seç">O Ch 4ª Seç</option>
+                        <option value="Cmt 1ª Cia Fuz Bld">O Cmt 1ª Cia Fuz Bld</option>
+                        <option value="Cmt 2ª Cia Fuz Bld">O Cmt 2ª Cia Fuz Bld</option>
+                        <option value="Cmt 3ª Cia Fuz Bld">O Cmt 3ª Cia Fuz Bld</option>
+                        <option value="Cmt 4ª Cia Fuz Bld">O Cmt 4ª Cia Fuz Bld</option>
+                        <option value="Cmt Cia C Ap">O Cmt Cia C Ap</option>
+                        <option value="Instr Ch NPOR">O Instr Ch NPOR</option>
+                        <option value="Reg B Mus">O Reg B Mus</option>
+                        <option value="[Digite aqui]">Outro Ch Seç/Cmt SU</option>
+                    </select>
+
+                    <div class="linha-horizontal"></div>
+                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                </div>
+
+            </div>
+            
+            </form>
+        </div>   
+        <!-- 3 Scripts fundamentais para o campo select Pesquisável do projeto -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('.campo100').select2({
+                    width: '100%'
+                    //estililizando todos tamanho 100% da largura
+                });
+                $('.campo90').select2({
+                    width: '90%'
+                    //estililizando todos tamanho 100% da largura
+                });
+                $('.campo80').select2({
+                    width: '80%'
+                    //estililizando todos tamanho 100% da largura
+                });
+                $('.campo70').select2({
+                    width: '70%'
+                    //estililizando todos tamanho 100% da largura
+                });
+                $('.campo60').select2({
+                    width: '60%'
+                    //estililizando todos tamanho 100% da largura
+                });
+                $('.campo50').select2({
+                    width: '50%'
+                    //estililizando todos tamanho 100% da largura
+                });
+                $('.campo40').select2({
+                    width: '40%'
+                    //estililizando todos tamanho 100% da largura
+                });
+                $('.campo30').select2({
+                    width: '30%'
+                    //estililizando todos tamanho 100% da largura
+                });
+            });
+        </script>
+        </div>
+        </div>
+    </div>
+    <!-- Footer com informações necessárias -->
+    <footer>
+        <div class="flex-conteiner-footer">
+            <div class="criadoImplement">
+                Pensado e implementado por:
+                <p>Cb IGOR CARDOSO DE <strong>JESUS</strong>
+            </div>
+            <div>
+            <span style='font-size:20px;'>&#128679;
+            SISTEMA EM CONSTRUÇÃO &#128679;</span>
+
+            </div>
+            <div class="relatarErroEscritaLink">
+                <h6>Para relatar Erros e Bugs:</h6>
+                <span>Clique <a href="https://forms.gle/iphJ3PE9NYCGAZ8z9" target="blank">aqui</a>.</span>
+            </div> 
+        </div>
+    </footer>
+    <script src="scripts/allpage.js"></script>
+</div>
+</body>
+</html>
