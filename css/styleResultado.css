@@ -70,7 +70,7 @@ legend {
     padding: 10px;
     text-align: center;
     FONT-SIZE: 20px;
-    FONT-FAMILY: Arial;
+    FONT-FAMILY: Arial, serif;
 }
 
 .legendaFildset{
@@ -83,9 +83,6 @@ legend {
     /* opacity: 0.5; */
     border-radius: 10px;
 }
-
-
-
 
 #submit {
     background-image: linear-gradient(to right,#848484, #344E41);
