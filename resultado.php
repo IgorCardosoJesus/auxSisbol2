@@ -10,8 +10,6 @@ use Igor\Projeto\funcoes\TornoSemEfeito;
 use Igor\Projeto\funcoes\MudancaPlanoFerias;
 use Igor\Projeto\funcoes\ReferenciarDIEx;
 use Igor\Projeto\funcoes\InclusaoPlanFerias;
-use PDOException;
-use Exception;
 use Igor\Projeto\funcoes\PassRecebFuncao;
 
 ?>
@@ -34,62 +32,76 @@ use Igor\Projeto\funcoes\PassRecebFuncao;
 </head>
 
 <body>
-    <!-- Navbar simples com os ícones de plaquinha (Criando ecossistema) -->
-    <nav>
-        <div class="conteinerNav">
-        <div>
-            <span style='font-size:12px;'>&#128679; SISTEMA EM CONSTRUÇÃO &#128679; SISTEMA EM CONSTRUÇÃO &#128679;</span>
-        </div>
-        <div ontouchstart="">
-            <div class="button">
-                <a href="img/manualUsuario.pdf" target="blank">Manual do Usuário</a>
-            </div>
-        </div>
-        <div>
-            <span style='font-size:12px;'>&#128679; SISTEMA EM CONSTRUÇÃO &#128679; SISTEMA EM CONSTRUÇÃO &#128679;</span>
-        </div>
-        </div>
-    </nav>
-    <div class="container"> <!-- Conteiner está organizando todo o conteúdo da página -->
+<!-- Navbar simples com os ícones de plaquinha (Criando ecossistema) -->
+<nav>
 
-        <div class="duasBoxCospeConteudoFormulario">
-            <div class="boxNotaGerada">
-                <fieldset>
-                    <legend class="legendaFildset"><b>Texto de Abertura:</b></legend>
-                    <!-- Texto sendo mostrado dentro desse TextArea somente leitura -->
-                    <textarea name="textoAbertura" cols="100" rows="5" class="TXTAbertura" readonly>
-                    <?php
-                    $valuetimelyDate = [];
+        <span style='font-size:12px;'>&#128679; SISTEMA EM CONSTRUÇÃO &#128679; SISTEMA EM CONSTRUÇÃO &#128679;</span>
+
+        <div class="button">
+                <a href="img/manualUsuario.pdf" target="blank">Manual do Usuário</a>
+
+        </div>
+
+        <span style='font-size:12px;'>&#128679; SISTEMA EM CONSTRUÇÃO &#128679; SISTEMA EM CONSTRUÇÃO &#128679;</span>
+
+</nav>
+<div class="container-body"> <!-- Conteiner está organizando todo o conteúdo da página -->
+        <div class="boxNotaGerada">
+            <fieldset>
+                <legend class="legendaFildset"><b>Texto de Abertura:</b></legend>
+                <!-- Texto sendo mostrado dentro desse TextArea somente leitura -->
+                <textarea name="textoAbertura" cols="100" rows="5" class="TXTAbertura" readonly><?php
                     //Se o usuário apertar no botão pra zerar formulário, printa nada na tela
                     if (isset($_POST['Enviar'])) {
                         try {
                             // A partir desta etapa é toda regra de negócio, ponto a ponto do que o usuário selecionar (Método POST está pegando pelo 'name' dos radios, atentar pontualmente para isso)
                             $tipoDaNota = $_POST['tipoNota'];
-                            $valuetimelyDate = $_POST['dateOportuna'];
-                    
+                            $dataOportuna = $_POST['dateOportuna'];
+
                             if ($tipoDaNota === 'apresentacoesDiversas') {
                                 $tipoEspecificoDeApresentacao = $_POST['ApresentEspecifica'];
                                 $dadosTratadosRefApresentacoes = Apresentacoes::processarDados($tipoEspecificoDeApresentacao);
-                                 echo ($dadosTratadosRefApresentacoes . ".");
+                                if ($dataOportuna == '1') {
+                                    echo ($dadosTratadosRefApresentacoes . ".");
+                                } else {
+                                    echo ($dadosTratadosRefApresentacoes . ", por não ter sido publicado em data oportuna.");
+                                }
                             } elseif ($tipoDaNota === 'dispensaReassuncaoFuncao') {
                                 $tipoEspecificoNotaDispSubstReass = $_POST['estadoFuncaoTransitoria'];
                                 $dadosTratadosRefFuncaoTransitoria = FuncoesTransitorias::processarDados($tipoEspecificoNotaDispSubstReass);
-                                echo ($dadosTratadosRefFuncaoTransitoria . ".");
+                                if ($dataOportuna == '1') {
+                                    echo ($dadosTratadosRefFuncaoTransitoria . ".");
+                                } else {
+                                    echo ($dadosTratadosRefFuncaoTransitoria . ", por não ter sido publicado em data oportuna.");
+                                }
                             } elseif ($tipoDaNota === 'tornarSemEfeito') {
                                 $tipoEspecificoSemEfeito = $_POST['semEfeito'];
                                 $dadosTratadosRefNotaSemEfeito = TornoSemEfeito::processarDados($tipoEspecificoSemEfeito);
-                                echo ($dadosTratadosRefNotaSemEfeito . ".");
+                                if ($dataOportuna == '1') {
+                                    echo ($dadosTratadosRefNotaSemEfeito . ".");
+                                } else {
+                                    echo ($dadosTratadosRefNotaSemEfeito . ", por não ter sido publicado em data oportuna.");
+                                }
                             } elseif ($tipoDaNota === 'mudancaPlanoFerias') {
                                 $tipoEspecificoMudanca = $_POST['mudancaPF'];
                                 $dadosTratadosRefMudancaPF = MudancaPlanoFerias::processarDados($tipoEspecificoMudanca);
-                                echo ($dadosTratadosRefMudancaPF . ".");
+                                if ($dataOportuna == '1') {
+                                    echo ($dadosTratadosRefMudancaPF . ".");
+                                } else {
+                                    echo ($dadosTratadosRefMudancaPF . ", por não ter sido publicado em data oportuna.");
+                                }
                             } elseif ($tipoDaNota === 'afastamentosdiversos') {
                                 $tipoEspecificoAfastamento = $_POST['afastamentos'];
                                 $dadosTratadosRefAfastamentos = Afastamentos::processarDados($tipoEspecificoAfastamento);
-                                echo ($dadosTratadosRefAfastamentos . "."); 
+                                if ($dataOportuna == '1') {
+                                    echo ($dadosTratadosRefAfastamentos . ".");
+                                } else {
+                                    echo ($dadosTratadosRefAfastamentos . ", por não ter sido publicado em data oportuna.");
+                                }
                             } elseif ($tipoDaNota === 'refDIExGenerico') {
-                                $nRdiexSolicitacao = $_POST['nrDiexSolicitacaoGenerico']; 
-                                $nup = $_POST['nrNUPGenerico']; 
+
+                                $nRdiexSolicitacao = $_POST['nrDiexSolicitacaoGenerico'];
+                                $nup = $_POST['nrNUPGenerico'];
                                 $dataDESFORMATADA = $_POST['data_do_DIEx_Generico'];
                                 $dataDIExFormatadoPadraoOM = Formatacoes::formatadordeData($dataDESFORMATADA);
                                 $remetente = $_POST['remetente'];
@@ -99,34 +111,48 @@ use Igor\Projeto\funcoes\PassRecebFuncao;
                                 } else{
 
                                     $dadosTratadosRefDIEXGenerico = ReferenciarDIEx::processarDados($nRdiexSolicitacao, $nup, $remetente, $dataDIExFormatadoPadraoOM);
-				echo ($dadosTratadosRefDIEXGenerico . ".");
+
+                                    if ($dataOportuna == '1') {
+                                        echo ($dadosTratadosRefDIEXGenerico . ".");
+                                    } else {
+                                        echo ($dadosTratadosRefDIEXGenerico . ", por não ter sido publicado em data oportuna.");
+                                    }
+                                }
                             } elseif ($tipoDaNota === 'inclusaoPlanFerias') {
                                 $tipoEspecificoInclusaoPlanFerias = $_POST['inclusaoferias'];
                                 $dadosTratadosRefAfastamentos = InclusaoPlanFerias::processarDados($tipoEspecificoInclusaoPlanFerias);
-                                echo ($dadosTratadosRefAfastamentos . ".");
+                                if ($dataOportuna == '1') {
+                                    echo ($dadosTratadosRefAfastamentos . ".");
+                                } else {
+                                    echo ($dadosTratadosRefAfastamentos . ", por não ter sido publicado em data oportuna.");
+                                }
                             } elseif ($tipoDaNota === 'passagemFuncao') {
                                 $tipoEspecificoInclusaoPlanFerias = $_POST['funcoes'];
                                 $dadosTratadosRefAfastamentos = PassRecebFuncao::processarDados($tipoEspecificoInclusaoPlanFerias);
-                                echo ($dadosTratadosRefAfastamentos . ".");
-                            }
-                            if ($dataOportuna == '1'){
-                            
+                                if ($dataOportuna == '1') {
+                                    echo ($dadosTratadosRefAfastamentos . ".");
+                                } else {
+                                    echo ($dadosTratadosRefAfastamentos . ", por não ter sido publicado em data oportuna.");
+                                }
                             }
                         } catch (Exception $e) {
                             // Tratamento adequado da exceção
                             echo "Ocorreu um erro ao processar os dados: " . $e->getMessage();
                         }
                     }
-                ?></textarea>
+                    ?></textarea>
                 <br><br>
                 <!-- Botão de copiar conteúdo, funcionando através do script logo abaixo -->
-                <button type="button" class="copiar" id="button">Copiar Texto de Abertura</button><br><br>
+                <button type="button" class="copiar" id="button">Copiar Texto de Abertura</button>
+                <button type="button" class="redirect-button" id="buttonRedirect" onclick="window.location.href='index.php';">
+                    Voltar para o formulário
+                </button>
                 <script>
                     const btnCopiar = document.querySelector('.copiar');
                     const textAreaTextoAbertura = document.querySelector('.TXTAbertura');
                     //Função assíncrona que primeiro copia o dado para o Clipboard e depois mostra o alerta na tela para o usuário
                     btnCopiar.addEventListener('click', async (e) =>{
-                        if (navigator.clipboard) { 
+                        if (navigator.clipboard) {
                             try{
                                 await navigator.clipboard.writeText(textAreaTextoAbertura.value)
                                 //console.log(textAreaTextoAbertura.value);
@@ -162,119 +188,102 @@ use Igor\Projeto\funcoes\PassRecebFuncao;
                         }
                     });
                 </script>
-                </fieldset>
-            </div>
+            </fieldset>
+        </div>
 
-            <div class="boxNotaGerada">
-                <fieldset> <!-- Início da box referente ao texto de fechamento nos mesmos moldes do texto de abertura -->
-                    <legend class="legendaFildset"><b> Texto de Fechamento:</b></legend>
-                    <textarea name="textoFechamento" cols="100" rows="5" class="TXTFechamento" readonly>
-                    <?php
-                    if (isset($_POST['Enviar'])){ 
+        <div class="boxNotaGerada">
+            <fieldset> <!-- Início da box referente ao texto de fechamento nos mesmos moldes do texto de abertura -->
+                <legend class="legendaFildset"><b> Texto de Fechamento:</b></legend>
+                <textarea name="textoFechamento" cols="100" rows="5" class="TXTFechamento" readonly><?php
+                    if (isset($_POST['Enviar'])){
                         //REFATORAR NO SENTIDO DE: CASO O MILITAR SE APRESENTOU DE TERM INSTALAÇÃO, TENHO QUE DESIGNAR PARA UMA SU, OU SEJA, EM CONSEQÊNCIA "COMPOSTO"
                         if ($tipoDaNota === 'mudancaPlanoFerias')
                         {
                             $SUEmConsequencia = $_POST['SUGeral'];
-                            if ($valuetimelyDate[0] == '0'){
-                            	echo "Em consequência, dou o seguinte despacho: DEFERIDO. Seja alterado o período de férias conforme solicitado; \n- o Ch 1ª Seç, $SUEmConsequencia e os demais interessados, tomem conhecimento e adotem as providências decorrentes. \n(Por não ter sido publicado em data oportuna).";
-                            }else{
-                            	echo "Em consequência, dou o seguinte despacho: DEFERIDO. Seja alterado o período de férias conforme solicitado; e\n- o Ch 1ª Seç, $SUEmConsequencia e os demais interessados, tomem conhecimento e adotem as providências decorrentes.";
-                            }
-                        } else if ($tipoDaNota === 'inclusaoPlanFerias'){
+                            echo "Em consequência, dou o seguinte despacho: DEFERIDO. Seja alterado o período de férias conforme solicitado; e\n- o Ch 1ª Seç, $SUEmConsequencia e os demais interessados, tomem conhecimento e adotem as providências decorrentes.";
+                        } else if ($tipoDaNota === 'inclusaoPlanFerias')
+                        {
                             $SUEmConsequencia = $_POST['SUGeral'];
-                            if ($valuetimelyDate[0] == '0'){
-                            	echo "Em consequência, o Ch 1ª Seç, $SUEmConsequencia, o Ch Seç Pg Pes e os demais interessados, tomem conhecimento e adotem as providências decorrentes. \n (Por não ter sido publicado em data oportuna).";
-                            } else
-                            	echo "Em consequência, o Ch 1ª Seç, $SUEmConsequencia, o Ch Seç Pg Pes e os demais interessados, tomem conhecimento e adotem as providências decorrentes.";
-                        } elseif ($tipoDaNota === 'refDIExGenerico') { 
+                            echo "Em consequência, o Ch 1ª Seç, $SUEmConsequencia, o Ch Seç Pg Pes e os demais interessados, tomem conhecimento e adotem as providências decorrentes.";
+                        } elseif ($tipoDaNota === 'refDIExGenerico') {
                             echo "";
                         } elseif ($tipoDaNota === 'tornarSemEfeito') {
                             echo "";
                         } else{
                             $SUEmConsequencia = $_POST['SUGeral'];
-                            if ($valuetimelyDate[0] == '0'){
-                            	echo "Em consequência, o Ch 1ª Seç, $SUEmConsequencia e os demais interessados, tomem conhecimento e adotem as providências decorrentes. \n (Por não ter sido publicado em data oportuna).";
-                            }else{
-                            	echo "Em consequência, o Ch 1ª Seç, $SUEmConsequencia e os demais interessados, tomem conhecimento e adotem as providências decorrentes";
-                            }
+                            echo "Em consequência, o Ch 1ª Seç, $SUEmConsequencia e os demais interessados, tomem conhecimento e adotem as providências decorrentes.";
                         }
                     }
                     ?></textarea>
-                    <br><br>
-                    <button type="button" class="copiarFechamento" id="buttonFechamento">Copiar Texto de Fechamento</button><br><br>
-                    <script>
-                        const btnCopiarTextFechamento = document.querySelector('.copiarFechamento');
-                        const textAreaTextoFechamento = document.querySelector('.TXTFechamento');
+                <br><br>
+                <button type="button" class="copiarFechamento" id="buttonFechamento">Copiar Texto de Fechamento</button>
+                <button type="button" class="redirect-button" id="buttonRedirect" onclick="window.location.href='index.php';">
+                    Voltar para o formulário
+                </button>
+                <script>
+                    const btnCopiarTextFechamento = document.querySelector('.copiarFechamento');
+                    const textAreaTextoFechamento = document.querySelector('.TXTFechamento');
 
-                        btnCopiarTextFechamento.addEventListener('click', async (e) => {
-                            
-                            if (navigator.clipboard) {
-                                try {
-                                    await navigator.clipboard.writeText(textAreaTextoFechamento.value);
-                                    console.log(textAreaTextoFechamento.value);
-                                    alert('Texto de Fechamento copiado com sucesso! Cole com Ctrl + Shift + V no SISBOL para colar sem formatação.');
-                                } catch (err) {
-                                    console.log(textAreaTextoFechamento.value);
-                                    console.error('Erro ao copiar texto:', err);
-                                    alert('Ocorreu um erro ao copiar o texto de Fechamento. Por favor, tente novamente.');
-                                }
-                            } else {
-                                var texto = textAreaTextoFechamento.value; // Correção aqui
+                    btnCopiarTextFechamento.addEventListener('click', async (e) => {
 
-                                // Criar um input oculto
-                                var input = document.createElement('input');
-                                input.setAttribute('type', 'text');
-                                input.setAttribute('value', texto);
-                                document.body.appendChild(input);
-
-                                // Selecionar o texto no input
-                                input.select();
-
-                                // Copiar o texto selecionado
-                                document.execCommand('copy');
-
-                                // Remover o input
-                                document.body.removeChild(input);
-                                
-                                // Verificar se o texto foi copiado com sucesso
-                                if (document.queryCommandSupported('copy')) {
-                                    alert('Texto de Fechamento copiado com sucesso! Cole com Ctrl + Shift + V no SISBOL para colar sem formatação!');
-                                } else {
-                                    alert('Seu navegador não suporta a funcionalidade de cópia para a área de transferência. Tente usar um navegador mais recente!');
-                                }
+                        if (navigator.clipboard) {
+                            try {
+                                await navigator.clipboard.writeText(textAreaTextoFechamento.value);
+                                console.log(textAreaTextoFechamento.value);
+                                alert('Texto de Fechamento copiado com sucesso! Cole com Ctrl + Shift + V no SISBOL para colar sem formatação.');
+                            } catch (err) {
+                                console.log(textAreaTextoFechamento.value);
+                                console.error('Erro ao copiar texto:', err);
+                                alert('Ocorreu um erro ao copiar o texto de Fechamento. Por favor, tente novamente.');
                             }
-                        });
-                    </script>
+                        } else {
+                            var texto = textAreaTextoFechamento.value; // Correção aqui
 
-                    <br><br>
-                </fieldset>
-            </div>
+                            // Criar um input oculto
+                            var input = document.createElement('input');
+                            input.setAttribute('type', 'text');
+                            input.setAttribute('value', texto);
+                            document.body.appendChild(input);
+
+                            // Selecionar o texto no input
+                            input.select();
+
+                            // Copiar o texto selecionado
+                            document.execCommand('copy');
+
+                            // Remover o input
+                            document.body.removeChild(input);
+
+                            // Verificar se o texto foi copiado com sucesso
+                            if (document.queryCommandSupported('copy')) {
+                                alert('Texto de Fechamento copiado com sucesso! Cole com Ctrl + Shift + V no SISBOL para colar sem formatação!');
+                            } else {
+                                alert('Seu navegador não suporta a funcionalidade de cópia para a área de transferência. Tente usar um navegador mais recente!');
+                            }
+                        }
+                    });
+                </script>
+
+            </fieldset>
         </div>
-        <div>
-            <button type="button" class="redirect-button" id="buttonRedirect" onclick="window.location.href='index.php';">
-            Voltar para o formulário
-            </button>
-        </div>
+
     </div>
-    <!-- Footer com informações necessárias -->
-    <footer>
-        <div class="flex-conteiner-footer">
-            <div class="criadoImplement">
-                Pensado e implementado por:
-                <p>Cb IGOR CARDOSO DE <strong>JESUS</strong>
-            </div>
-            <div>
-            <span style='font-size:20px;'>&#128679;
-            SISTEMA EM CONSTRUÇÃO &#128679;</span>
+<!-- Footer com informações necessárias -->
+<footer>
+    <div class="criadoImplement">
+        Pensado e implementado por:
+        <p>Cb IGOR CARDOSO DE <strong>JESUS</strong>
+    </div>
+    <div>
+        <span style='font-size:20px;'>&#128679;
+        SISTEMA EM CONSTRUÇÃO &#128679;</span>
 
-            </div>
-            <div class="relatarErroEscritaLink">
-                <h6>Para relatar Erros e Bugs:</h6>
-                <span>Clique <a href="https://forms.gle/iphJ3PE9NYCGAZ8z9" target="blank">aqui</a>.</span>
-            </div> 
-        </div>
-    </footer>
-    <script src="scripts/allpage.js"></script>
-</div>
+    </div>
+    <div class="relatarErroEscritaLink">
+        <h6>Para relatar Erros e Bugs:</h6>
+        <span>Clique <a href="https://forms.gle/iphJ3PE9NYCGAZ8z9" target="blank">aqui</a>.</span>
+    </div>
+</footer>
+<script src="scripts/allpage.js"></script>
 </body>
 </html>

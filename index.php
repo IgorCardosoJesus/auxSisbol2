@@ -54,19 +54,19 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
 
                 <br><br>
                 <input type="radio" id="afastamento" name="tipoNota" value="afastamentosdiversos" required>
-                <label for="afastamento">Afastamentos Diversos &#x274e;</label>
+                <label for="afastamento">Afastamentos Diversos</label>
 
                 <br><br>
                 <input type="radio" id="passagemFuncao" name="tipoNota" value="passagemFuncao" required>
-                <label for="passagemFuncao">Passagem e Recebimento de Função &#x274e;</label>
+                <label for="passagemFuncao">Passagem e Recebimento de Função</label>
 
                 <br><br>
                 <input type="radio" id="funcaotransitoria" name="tipoNota" value="dispensaReassuncaoFuncao" required>
-                <label for="funcaotransitoria">Função Designação, Dispensa, Substituição Temporária e Reassunção de função &#x274e;</label>
+                <label for="funcaotransitoria">Função Designação, Dispensa, Substituição Temporária e Reassunção de função</label>
 
                 <br><br>
                 <input type="radio" id="mudancaPF" name="tipoNota" value="mudancaPlanoFerias" required>
-                <label for="mudancaPF">Mudança no Plano de Férias &#x274e;</label>
+                <label for="mudancaPF">Mudança no Plano de Férias</label>
 
                 <br><br>
                 <input type="radio" id="tornarSemEfeito" name="tipoNota" value="tornarSemEfeito" required>
@@ -74,12 +74,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
 
                 <br><br>
                 <input type="radio" id="inclusaoPlanFerias" name="tipoNota" value="inclusaoPlanFerias" required>
-                <label for="inclusaoPlanFerias">Inclusão no Plano de Férias &#x274e;</label>
+                <label for="inclusaoPlanFerias">Inclusão no Plano de Férias</label>
 
                 <br><br>
                 <input type="radio" id="refDIExGenerico" name="tipoNota" value="refDIExGenerico" required>
-                <label for="refDIExGenerico">Referenciar DIEx no Boletim &#x274e;</label>
-
+                <label for="refDIExGenerico">Referenciar DIEx no Boletim</label>
                 <!-- Último terço do código -->
                 <div class="linha-horizontal"></div>
                     <label for="dataOportuna">Publicado em data oportuna:</label>
@@ -1516,7 +1515,7 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
             <span style='font-size:16px;'>- O campo "Publicado em data oportuna:" é para: o caso da nota atrasar 1 (um) mês ±, ou caso seja mandado colocar.</span><br>
             <span style='font-size:16px;'>- Por padrão, para fins de Alterações, o texto de abertura e fechamento é sempre no singular.</span>
             <legend class="legendaFildset"><b>Avisos &#x1F4CC;</b></legend>
-            <span style='font-size:16px;'>- Sistema em construção, versão 2.0 (disponibilizado em 20 JUN 24 &#x1f4c6;), verifique o manual do usuário e as novas rotinas.</span><br>
+            <span style='font-size:16px;'>- Sistema em construção, versão 2.1 (Atualizado em 06 MAR 25 &#x1f4c6;), verifique o manual do usuário e as novas rotinas.</span><br>
             <span style='font-size:16px;'>- No rodapé encontra-se o link do Forms para envio de relato de Bugs e/ou erros ortográficos.</span><br>
             <span style='font-size:16px;'>- &#x274e; = Rotina nova e/ou atualizada</span><br>
             <span style='font-size:16px;'>- &#9995; = Rotina em construção</span><br><br>
@@ -1530,11 +1529,7 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
             Pensado e implementado por:
             <p>Cb IGOR CARDOSO DE <strong>JESUS</strong>
         </div>
-        <div>
-                <span style='font-size:20px;'>&#128679;
-                SISTEMA EM CONSTRUÇÃO &#128679;</span>
-
-        </div>
+        <span style='font-size:20px;'>&#128679;SISTEMA EM CONSTRUÇÃO &#128679;</span>
         <div class="relatarErroEscritaLink">
             <h6>Para relatar Erros e Bugs:</h6>
             <span>Clique <a href="https://forms.gle/iphJ3PE9NYCGAZ8z9" target="blank">aqui</a>.</span>
