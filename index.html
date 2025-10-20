@@ -1,12 +1,3 @@
-<?php
-setlocale(LC_TIME, 'pt_BR');
-require 'vendor/autoload.php';
-use Igor\Projeto\funcoes\Apresentacoes;
-use Igor\Projeto\funcoes\FuncoesTransitorias;
-use Igor\Projeto\funcoes\Formatacoes;
-use Igor\Projeto\funcoes\TornoSemEfeito;
-use Igor\Projeto\funcoes\MudancaPlanoFerias;
-?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -41,10 +32,10 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
     </div>
 </nav>
 
-    <div class="container-body"> <!-- Conteiner está organizando todo o conteúdo da página -->
+    <div class="container-body" role="main"> <!-- Conteiner está organizando todo o conteúdo da página -->
         <!-- Navbar simples com os ícones de plaquinha (Criando ecossistema) -->
 
-        <form id="formulariobasico" action="resultado.php" method="POST">
+        <form id="formulariobasico" role="form" action="" onsubmit="return false;">
             <div class="escolhaInicial">
 
                 <!-- Começo questionário inicial -->
@@ -88,7 +79,7 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         </select>
                     <br><br>
                     <label for="SUDosMilitares">SU do(s) militar(es):</label>
-                        <select id="SUDosMilitares" name="SUGeral" class="campo40">
+                        <select id="SUDosMilitares" name="SUGeral" required class="campo40">
                             <option value="o Cmt 1ª Cia Fuz Bld">1ª Cia Fuz Bld</option>
                             <option value="o Cmt 2ª Cia Fuz Bld">2ª Cia Fuz Bld</option>
                             <option value="o Cmt 3ª Cia Fuz Bld">3ª Cia Fuz Bld</option>
@@ -121,7 +112,7 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                 <div id="camposAdicionais" class="hidden">
                     <label for="data_apresentacao"><b>Apresentou quando: </b></label>
                     <!-- Caixa tipo data para seleção do dia de referência -->
-                    <input type="date" name="data_apresentacao" id="data_apresentacao">
+                    <input type="date" name="data_apresentacao" required id="data_apresentacao">
                     <br>
                     <div class="linha-horizontal-entre-campos"></div>
                     <!-- Início dos tipos de nota referente a apresentação por término de férias -->
@@ -147,12 +138,12 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     <div id="campoAdicionalFerias" class="hidden">
                         <br>
                         <label for="anoDasFerias">Férias Referente a:</label>
-                        <?php $anos = Formatacoes::pegarAnosAnterioresAtualEPosteriores() ?>
-                        <select id="anoDasFerias" name="AnoFerias" class="campo50">
+                        
+                        <select id="anoDasFerias" name="AnoFerias" required class="campo50">
                             <option value="null">Selecione</option>
-                            <?php foreach ($anos as $ano): ?>
-                                <option value="<?php echo "$ano"; ?>"><?php echo "$ano"; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br><br>
                     </div>
@@ -183,11 +174,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <br>
                         <label for="funcoesBtl">Função:</label>
                         <!-- O value e o texto de cada option serão a mesma função -->
-                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        
                         <select id="funcoesBtl" name="apresentouTermRecebFuncaoCargoEncargo" class="campo60">
-                            <?php foreach ($funcoes as $funcao): ?>
-                                <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br>
                     </div>
@@ -195,11 +186,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     <div id="camposAdicionaisCarga" class="hidden">
                         <br>
                         <label for="funcoesBtlCarga">Material da:</label>
-                        <?php $ambitosTemMaterial = Formatacoes::pegarFuncoesQueTemCarga() ?>
+                        
                         <select id="funcoesBtlCarga" name="apresentouTermPassouRecebCarga" class="campo60">
-                            <?php foreach ($ambitosTemMaterial as $materiaisDa): ?>
-                                <option value="<?php echo $materiaisDa; ?>"><?php echo $materiaisDa; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br>
                     </div>
@@ -214,12 +205,7 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <br>
                         <label for="QtdeDias">Qtde dias gozou:</label>
                         <select id="QtdeDias" name="DiasDispCmt" class="campo50">
-                            <?php
-                            for ($i = 1; $i <= 8; $i++) {
-                                $numero = str_pad($i, 2, "0", STR_PAD_LEFT);
-                                echo "<option value=\"$numero\">$i dia" . ($i > 1 ? "s" : "") . "</option>";
-                            }
-                            ?>
+                            
                         </select>
                         <br><br>
                     </div>
@@ -268,22 +254,17 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <br>
                         <label for="dispDescoFerias">Gozou quantos dias:</label>
                         <select id="dispDescoFerias" name="gozoDispDescoFerias" class="campo50">
-                            <?php
-                            for ($i = 1; $i <= 9; $i++) {
-                                $numero = str_pad($i, 2, "0", STR_PAD_LEFT);
-                                echo "<option value=\"$numero\">$i dia" . ($i > 1 ? "s" : "") . "</option>";
-                            }
-                            ?>
+                            
                         </select>
 
                         <br><br>
                         <label for="anoDaDispDescoFerias">Referente a qual ano?</label>
-                        <?php $anos = Formatacoes::pegarAnosAnterioresAtualEPosteriores() ?>
+                        
                         <select id="anoDaDispDescoFerias" name="DispDescFerias" class="campo50">
-                            <?php foreach ($anos as $ano): ?>
-                                <option value="<?php echo "$ano"; ?>">
-                                    <?php echo "$ano"; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value="">
+                                    </option>
+                            
                         </select>
                         <br>
                     </div>
@@ -298,12 +279,7 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <label for="desistiuTransito">Desistiu de algum dia?</label>
                         <select id="desistiuTransito" name="desistiuDiasTransito" class="campo50">
                             <option value="nenhum">Não</option>
-                            <?php
-                            for ($i = 1; $i <= 30; $i++) {
-                                $numero = str_pad($i, 2, "0", STR_PAD_LEFT);
-                                echo "<option value=\"$numero\">$i dia" . ($i > 1 ? "s" : "") . "</option>";
-                            }
-                            ?>
+                            
                         </select>
                         <br>
                     </div>
@@ -315,7 +291,8 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     <label for="TermLuto">Término de Luto</label>
 
                     <div class="linha-horizontal"></div>
-                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                    <button type="button" name="Enviar" class="reiniciar" id="btnGerarNota_01">Gerar Nota</button>
+
                 </div>
                 <!-- 0.2
                 Campos Referente a dispensar de função / Substituir temporariamente / Reassunção função
@@ -324,7 +301,7 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                 <div id="camposAdicionaisFuncaoTransitoria" class="hidden">
                     <label for="data_saida_retorno_funcao"><b>Data do evento: </b></label>
                     <!-- Caixa tipo data para seleção do dia de referência -->
-                    <input type="date" name="data_saida_retorno_funcao" id="data_saida_retorno_funcao">
+                    <input type="date" name="data_saida_retorno_funcao" required id="data_saida_retorno_funcao">
                     <br>
                     <div class="linha-horizontal-entre-campos"></div>
                     <!-- Início dos tipos de nota referente a função transitoria -->
@@ -334,11 +311,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     <div id="campoAdicionalDesignacaoFuncao" class="hidden">
                         <br>
                         <label for="nomeFuncaoDesignacao">Designado p/:</label>
-                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
-                        <select id="nomeFuncaoDesignacao" name="qualFuncao" class="campo70">
-                            <?php foreach ($funcoes as $funcao): ?>
-                                <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
-                            <?php endforeach; ?>
+                        
+                        <select id="nomeFuncaoDesignacao" name="qualFuncao" required class="campo70">
+                            
+                                <option value=""></option>
+                            
                         </select><br>
                         <span style='font-size:15px; font-style: italic;'><i>*Usado apenas para<br>
                         1- Designações de auxiliares ou funções mais simples<br>
@@ -354,11 +331,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     <div id="campoAdicionalDispensaFuncao" class="hidden">
                         <br>
                         <label for="DispensadoDaFuncao">Dispensado de:</label>
-                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        
                         <select id="DispensadoDaFuncao" name="primeiraFuncao" class="campo60">
-                            <?php foreach ($funcoes as $funcao): ?>
-                                <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br><br>
                         <label for="exercerouResp">Exercia ou Respondia:</label>
@@ -382,12 +359,12 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         </span>
                         <br><br>
                         <label for="DispensadoDaSegundaFuncao">Se tinha uma segunda função selecione-a:</label><br><br>
-                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        
                         <select id="DispensadoDaSegundaFuncao" name="segundaFuncao" class="campo70">
                             <option value="null">Não</option>
-                            <?php foreach ($funcoes as $funcao): ?>
-                                <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br><br>
                         <label for="exercerouResp2">Informe se estava exercendo ou respondendo:</label>
@@ -406,11 +383,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     <div id="campoAdicionalFuncaoSubstTemporaria" class="hidden">
                         <br>
                         <label for="nomefuncaoSubstTemp">Substituirá o(a):</label>
-                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        
                         <select id="nomefuncaoSubstTemp" name="qualFuncaoSubstituira" class="campo60">
-                            <?php foreach ($funcoes as $funcao): ?>
-                                <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <div class="linha-horizontal-entre-campos"></div>
                     </div>
@@ -420,23 +397,24 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     <div id="campoAdicionalReassuncaoFuncao" class="hidden">
                         <br>
                         <label for="nomefuncaoreassumindo">Reassume:</label>
-                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        
                         <select id="nomefuncaoreassumindo" name="reassumiufuncao1" class="campo70">
-                            <?php foreach ($funcoes as $funcao): ?>
-                                <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select><br><br>
                         <label for="nomesegundafuncaoreassumindo">Reassume Outra(?)*:</label>
-                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        
                         <select id="nomesegundafuncaoreassumindo" name="reassumiufuncao2" class="campo50">
                             <option value="null">Não</option>
-                            <?php foreach ($funcoes as $funcao): ?>
-                                <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                     </div>
                     <div class="linha-horizontal"></div>
-                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                    <button type="button" name="Enviar" class="reiniciar" id="btnGerarNota_01">Gerar Nota</button>
+
                 </div>
                 <!-- 0.3
                 Campos Referente a TORNAR SEM EFEITO
@@ -485,22 +463,22 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <br>
                         <br>
                         <label for="anoDasFeriasSemEfeito">Férias referente a*:</label>
-                        <?php $anos = Formatacoes::pegarAnosAnterioresAtualEPosteriores() ?>
+                        
                         <select id="anoDasFeriasSemEfeito" name="anoFeriasApresentacaoSemEfeito" class="campo50">
                             <option value="null">Não refere-se a férias!</option>
-                            <?php foreach ($anos as $ano): ?>
-                                <option value="<?php echo "$ano"; ?>">
-                                    <?php echo "$ano"; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value="">
+                                    </option>
+                            
                         </select>
                         <br> <br>
                         <label for="semEfeitoRefFuncao">Função que se refere*:</label>
-                        <?php $funcoes = Formatacoes::pegarTodasFuncoesOM() ?>
+                        
                         <select id="semEfeitoRefFuncao" name="funcaoqueSeRefAprSemEfeito" class="campo50">
                             <option value="null">Não refere-se a funções!</option>
-                            <?php foreach ($funcoes as $funcao): ?>
-                                <option value="<?php echo $funcao; ?>"><?php echo $funcao; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br><br>
                         <label for="data_apr_tornando_sem_efeito"><b>Data para tornar s/efeito</b></label>
@@ -526,11 +504,7 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     <label for="nrBiConstPub">Nr do BI que consta a publicação:</label>
                     <select id="nrBiConstPub" name="nrBIConstPub" class="campo30">
                         <option value='null'>Selecione</option>
-                        <?php
-                        for ($i = 1; $i <= 250; $i++) {
-                            echo "<option value=\"$i\">BI Nr $i" . "</option>";
-                        }
-                        ?>
+                        
                     </select>
                     <br><br>
                     <label for="data_bi_publicou"><b>BI:</b></label>
@@ -542,15 +516,12 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     <label for="nrPagBI">Número da Página do BI:</label>
                     <select id="nrPagBI" name="nrPagBIsEfeito" class="campo40">
                         <option value='null'>Selecione</option>
-                        <?php
-                        for ($i = 1; $i <= 3000; $i++) {
-                            echo "<option value=\"$i\">Página $i" . "</option>";
-                        }
-                        ?>
+                        
                     </select>
                     <br>
                     <div class="linha-horizontal"></div>
-                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                    <button type="button" name="Enviar" class="reiniciar" id="btnGerarNota_01">Gerar Nota</button>
+
                 </div>
 
                 <!-- 0.4
@@ -562,12 +533,12 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
 
                     <!--REFERE-SE AO ANO DAS FÉRIAS, INDEPENDENTE DA MUDANÇA O CAMARADA TEM QUE SELECIONAR UM ANO DESTE-->
                     <label for="anoFeriasMudanca">Férias referente a:</label>
-                    <?php $anos = Formatacoes::pegarAnosAnterioresAtualEPosteriores() ?>
+                    
                     <select id="anoFeriasMudanca" name="anoFeriasMudanca" class="campo50">
                         <option value="Null">Selecione</option>
-                        <?php foreach ($anos as $ano): ?>
-                            <option value="<?php echo "$ano"; ?>"><?php echo "$ano"; ?></option>
-                        <?php endforeach; ?>
+                        
+                            <option value=""></option>
+                        
                     </select>
 
                     <div class="linha-horizontal-entre-campos"></div>
@@ -887,7 +858,8 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <br><br>
                     </div>
                     <div class="linha-horizontal"></div>
-                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                    <button type="button" name="Enviar" class="reiniciar" id="btnGerarNota_01">Gerar Nota</button>
+
                 </div>
 
                 <!-- 0.5 #############################################################
@@ -929,9 +901,9 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <label for="anoFerias">Referente a qual ano:</label>
                         <select id="anoFerias" name="anoFerias" class="campo50">
                             <option value="null">Selecione</option>
-                            <?php foreach ($anos as $ano): ?>
-                                <option value="<?php echo "$ano"; ?>"><?php echo "$ano"; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br>
                         <br>
@@ -952,9 +924,9 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <label for="anoFeriasRestantes">Referente a qual ano:</label>
                         <select id="anoFeriasRestantes" name="anoFeriasRestantes" class="campo50">
                             <option value="null">Selecione</option>
-                            <?php foreach ($anos as $ano): ?>
-                                <option value="<?php echo "$ano"; ?>"><?php echo "$ano"; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
 
                         <br><br>
@@ -966,12 +938,7 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <label for="qtdeDiasRest">Quantidade de dias restantes:</label>
                         <select id="qtdeDiasRest" name="qtdeDiasRest" class="campo30">
                             <option value='null'>Selecione</option>
-                            <?php
-                            for ($i = 1; $i <= 29; $i++) {
-                                $numero = str_pad($i, 2, "0", STR_PAD_LEFT);
-                                echo "<option value=\"$numero\">$i dia" . ($i > 1 ? "s" : "") . "</option>";
-                            }
-                            ?>
+                            
                         </select>
                         <br><br>
                     </div>
@@ -1064,16 +1031,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <br><br>
                         <label for="numDiasDispensaCmt5Bgda">Número de dias:</label>
                         <select id="numDiasDispensaCmt5Bgda" name="numDiasDispensaCmt5Bgda" class="campo40">
-                            <?php
-                            for ($i = 1; $i <= 30; $i++) {
-                                $numero = str_pad($i, 2, "0", STR_PAD_LEFT);
-                                echo "<option value=\"$numero\">$i dia" . ($i > 1 ? "s" : "") . "</option>";
-                            }
-                            ?>
+                            
                         </select>
                         <br>
                     </div>
-                    <div class="linha-horizontal-entre-campos"></div>
+                    <div class="linha-horizontal"></div>
                     <!-- Dispensa para Desconto em Férias -->
                     <input type="radio" id="dispensaDescontoFerias" name="afastamentos" value="dispensaDescontoFerias">
                     <label for="dispensaDescontoFerias">Dispensa para Desconto em Férias</label>
@@ -1099,21 +1061,16 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <br><br>
                         <label for="qtdeDiasRestantesFerias">Qtde dias restantes de Férias:</label>
                         <select id="qtdeDiasRestantesFerias" name="qtdeDiasRestantesFerias" class="campo30">
-                            <?php
-                            for ($i = 1; $i <= 30; $i++) {
-                                $numero = str_pad($i, 2, "0", STR_PAD_LEFT);
-                                echo "<option value=\"$numero\">$i dia" . ($i > 1 ? "s" : "") . "</option>";
-                            }
-                            ?>
+                            
                         </select>
                         <br><br>
                         <label for="anoDispDescoFerias">Ano das Férias:</label>
-                        <?php $anosDispReco = Formatacoes::pegarAnosAnterioresAtualEPosteriores() ?>
+                        
                         <select id="anoDispDescoFerias" name="anoDispDescoFerias" class="campo50">
                             <option value="null">Selecione</option>
-                            <?php foreach ($anosDispReco as $anoDispReco): ?>
-                                <option value="<?php echo "$anoDispReco"; ?>"><?php echo "$anoDispReco"; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br><br>
                     </div>
@@ -1175,7 +1132,8 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     </div>
 
                     <div class="linha-horizontal"></div>
-                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                    <button type="button" name="Enviar" class="reiniciar" id="btnGerarNota_01">Gerar Nota</button>
+
                     <!-- Final da opções possíveis-->
 
                 </div>
@@ -1204,11 +1162,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <br><br>
                         <label for="funcao_passagemMaterialEncargosValores">Nome da Função:</label>
                         <!-- O value e o texto de cada option serão a mesma função -->
-                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        
                         <select id="funcao_passagemMaterialEncargosValores" name="funcao_passagemMaterialEncargosValores" class="campo60">
-                            <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
-                                <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br><br>
                         <label for="data_inicio_passagemMaterialEncargosValores">Data início:</label>
@@ -1230,11 +1188,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         </select>
                         <br><br>
                         <label for="funcao_recebimentoMaterialEncargosValores">Nome da Função:</label>
-                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        
                         <select id="funcao_recebimentoMaterialEncargosValores" name="funcao_recebimentoMaterialEncargosValores" class="campo60">
-                            <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
-                                <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br><br>
                         <label for="data_inicio_recebimentoMaterialEncargosValores">Data início:</label>
@@ -1256,11 +1214,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         </select>
                         <br><br>
                         <label for="funcao_passagemCargoEncargos">Nome da Função:</label>
-                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        
                         <select id="funcao_passagemCargoEncargos" name="funcao_passagemCargoEncargos" class="campo60">
-                            <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
-                                <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br><br>
                         <label for="data_inicio_passagemCargoEncargos">Data início:</label>
@@ -1282,11 +1240,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         </select>
                         <br><br>
                         <label for="funcao_recebimentoCargoEncargos">Nome da Função:</label>
-                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        
                         <select id="funcao_recebimentoCargoEncargos" name="funcao_recebimentoCargoEncargos" class="campo60">
-                            <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
-                                <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br><br>
                         <label for="data_inicio_recebimentoCargoEncargos">Data início:</label>
@@ -1308,11 +1266,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         </select>
                         <br><br>
                         <label for="funcao_passagemMaterialValores">Nome da Função:</label>
-                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        
                         <select id="funcao_passagemMaterialValores" name="funcao_passagemMaterialValores" class="campo60">
-                            <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
-                                <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br><br>
                         <label for="data_inicio_passagemMaterialValores">Data início:</label>
@@ -1325,7 +1283,7 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     <label for="recebimentoMaterialValores">Recebimento de material e valores</label>
                     <br><br>
                     <!-- Detalhamento -->
-                    <div id="campoAdicionalrecebimentoMaterialValoresDetalhe" class="hidden">
+                    <div id="campoAdicionalrecebimentoMaterialValores" class="hidden">
                         <label for="prazo_recebimentoMaterialValores">Prazo:</label>
                         <select id="prazo_recebimentoMaterialValores" name="prazo_recebimentoMaterialValores" class="campo30">
                             <option value="04">4 dias</option>
@@ -1334,11 +1292,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         </select>
                         <br><br>
                         <label for="funcao_recebimentoMaterialValores">Nome da Função:</label>
-                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        
                         <select id="funcao_recebimentoMaterialValores" name="funcao_recebimentoMaterialValores" class="campo60">
-                            <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
-                                <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br><br>
                         <label for="data_inicio_recebimentoMaterialValores">Data início:</label>
@@ -1353,11 +1311,11 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     <!-- Detalhamento -->
                     <div id="campoAdicionalassuncaoFuncaoDetalhe" class="hidden">
                         <label for="funcao_assuncaoFuncao">Nome da Função:</label>
-                        <?php $funcoesMatEncVal = Formatacoes::pegarFuncoesRefPassagemDeFuncao() ?>
+                        
                         <select id="funcao_assuncaoFuncao" name="funcao_assuncaoFuncao" class="campo60">
-                            <?php foreach ($funcoesMatEncVal as $funcaoMatEncVal): ?>
-                                <option value="<?php echo $funcaoMatEncVal; ?>"><?php echo $funcaoMatEncVal; ?></option>
-                            <?php endforeach; ?>
+                            
+                                <option value=""></option>
+                            
                         </select>
                         <br><br>
                         <label for="data_inicio_assuncaoFuncao">Data da Assunção:</label>
@@ -1371,7 +1329,8 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
 
                     </div>
                     <div class="linha-horizontal"></div>
-                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                    <button type="button" name="Enviar" class="reiniciar" id="btnGerarNota_01">Gerar Nota</button>
+
                     <br><br>
                     <span style='font-size:15px; font-style: italic;'><i>Sobre passagem de função:<br>
                     1- utilizar 20 dias para encarregados de setor de material, encarregados de depósito de órgãos provedores, chefes de oficina e encarregados de setor de aprovisionamento.<br>
@@ -1403,12 +1362,12 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                 <div id="camposAdicionaisInclusaoPlanFerias" class="hidden">
 
                     <label for="anoDasFeriasInclusao">Férias Referente a:</label>
-                    <?php $anos = Formatacoes::pegarAnosAnterioresAtualEPosteriores() ?>
+                    
                     <select id="anoDasFeriasInclusao" name="AnoFeriasInclusao" class="campo50">
                         <option value="null">Selecione</option>
-                        <?php foreach ($anos as $ano): ?>
-                            <option value="<?php echo "$ano"; ?>"><?php echo "$ano"; ?></option>
-                        <?php endforeach; ?>
+                        
+                            <option value=""></option>
+                        
                     </select>
                     <div class="linha-horizontal-entre-campos"></div>
                     <!-- Inclusão no Período de Férias (30 dias corridos) -->
@@ -1455,7 +1414,8 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                         <input type="date" id="data_inicio3_inclusaoFerias3x10Dias" name="data_inicio3_inclusaoFerias3x10Dias">
                     </div>
                     <div class="linha-horizontal"></div>
-                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                    <button type="button" name="Enviar" class="reiniciar" id="btnGerarNota_01">Gerar Nota</button>
+
                 </div>
 
                 <!-- 0.8 #############################################################
@@ -1502,11 +1462,84 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
                     </select>
 
                     <div class="linha-horizontal"></div>
-                    <input type="submit" name="Enviar" class="botoes" id="submit" value="Gerar Nota" />
+                    <button type="button" name="Enviar" class="reiniciar" id="btnGerarNota_01">Gerar Nota</button>
+
                 </div>
 
             </div>
         </form>
+
+<!-- Modal simples para pré-visualização client-side -->
+<div id="modalGerarNota_01" role="dialog" aria-hidden="true" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:9999;">
+  <div style="background:#fff; padding:30px; max-width:900px; margin:auto; border-radius:8px; border:1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.1); position:relative;">
+    <h2>Nota Gerada</h2>
+    <div id="modalConteudoGerarNota" style="max-height:60vh; overflow:auto;">
+      <div>
+        <h4>Texto de Abertura:</h4>
+        <p id="textoAbertura"></p>
+        <button type="button" class="reiniciar" onclick="copyToClipboard(document.getElementById('textoAbertura').textContent)">Copiar</button>
+      </div>
+      <div>
+        <h4>Texto de Fechamento:</h4>
+        <p id="textoFechamento"></p>
+        <button type="button" class="reiniciar" onclick="copyToClipboard(document.getElementById('textoFechamento').textContent)">Copiar</button>
+      </div>
+    </div>
+    <div style="margin-top:12px; text-align:right;">
+      <button type="button" id="fecharModalGerarNota" class="reiniciar">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function copyToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).catch(err => {
+      console.error('Failed to copy: ', err);
+    });
+  } else {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.left = "-999999px";
+    textArea.style.top = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+    } catch (err) {
+      console.error('Fallback: Oops, unable to copy', err);
+    }
+    textArea.remove();
+  }
+}
+
+document.getElementById('btnGerarNota_01').addEventListener('click', function(){
+  var conteudo = (typeof window.gerarNotaClientSide === 'function')
+    ? window.gerarNotaClientSide()
+    : '<p>Não há rotina de geração implementada no client-side.</p>';
+  // Split into abertura and fechamento
+  let abertura = conteudo;
+  let fechamento = '';
+  const closingPhrase = ' e por estar pronto para o serviço';
+  if (conteudo.includes(closingPhrase)) {
+    const parts = conteudo.split(closingPhrase);
+    abertura = parts[0];
+    fechamento = closingPhrase;
+  }
+  document.getElementById('textoAbertura').textContent = abertura;
+  document.getElementById('textoFechamento').textContent = fechamento;
+  var modal = document.getElementById('modalGerarNota_01');
+  modal.style.display = 'flex';
+  modal.setAttribute('aria-hidden','false');
+});
+document.getElementById('fecharModalGerarNota').addEventListener('click', function(){
+  var modal = document.getElementById('modalGerarNota_01');
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden','true');
+});
+</script>
 
         <div class="campoDosAvisosDireita">
             <legend class="legendaFildset"><b>Dicas &#x1F4CC;</b></legend>
@@ -1577,4 +1610,9 @@ use Igor\Projeto\funcoes\MudancaPlanoFerias;
         });
     });
 </script>
+<div id="resultado" aria-live="polite"></div>
+<script type="module" src="scripts/modules/formatacoes.js"></script>
+<script type="module" src="scripts/modules/templates.js"></script>
+<script type="module" src="scripts/modules/afastamentos.js"></script>
+<script type="module" src="scripts/main.js"></script>
 </html>

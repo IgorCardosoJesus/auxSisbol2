@@ -197,4 +197,4 @@ legend {
     .container-body{
         grid-template-columns: 1fr;
     }
-}
+}@media (max-width: 768px) { .container-body { grid-template-columns: 1fr; } .duasBoxCospeConteudoFormulario { width: 100%; } #formulariobasico { width: 100%; flex-direction: column; } }
