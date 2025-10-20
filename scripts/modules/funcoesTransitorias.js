@@ -3,15 +3,19 @@ import { templates } from './templates.js';
 import { formatadordeData, ApartirOuAcontar } from './formatacoes.js';
 
 export function processarFuncaoTransitoria(tipoEspecificoNotaDispSubstReass, inputs) {
-  console.log('Processing funcao transitoria tipo:', tipoEspecificoNotaDispSubstReass, 'with inputs:', inputs);
+  console.log('🔄 [FUNÇÃO TRANSITÓRIA] Processing tipo:', tipoEspecificoNotaDispSubstReass, 'with inputs:', inputs);
+
   // Validações gerais
   if (typeof tipoEspecificoNotaDispSubstReass !== 'string' || !tipoEspecificoNotaDispSubstReass) {
+    console.error('❌ [FUNÇÃO TRANSITÓRIA] Tipo específico inválido:', tipoEspecificoNotaDispSubstReass);
     throw new Error('Tipo específico de função transitoria inválido');
   }
   if (typeof inputs !== 'object' || inputs === null) {
+    console.error('❌ [FUNÇÃO TRANSITÓRIA] Inputs inválidos:', inputs);
     throw new Error('Inputs devem ser um objeto válido');
   }
   if (!inputs.data_saida_retorno_funcao || !/^\d{4}-\d{2}-\d{2}$/.test(inputs.data_saida_retorno_funcao)) {
+    console.error('❌ [FUNÇÃO TRANSITÓRIA] Data inválida:', inputs.data_saida_retorno_funcao);
     throw new Error('Data obrigatória e no formato YYYY-MM-DD');
   }
 

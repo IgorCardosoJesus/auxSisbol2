@@ -413,20 +413,35 @@ document.querySelectorAll('input[name="funcoes"]').forEach(function (radio) {
         });
 
         // Verifica qual botão de rádio está selecionado e mostra os campos adicionais correspondentes
-        if (document.getElementById('passagemMaterialEncargosValores').checked) {    
-            document.getElementById('campoAdicionalpassagemMaterialEncargosValoresDetalhe').classList.remove('hidden');
-        } else if (document.getElementById('recebimentoMaterialEncargosValores').checked) {
-            document.getElementById('campoAdicionalrecebimentoMaterialEncargosValoresDetalhe').classList.remove('hidden');
-        } else if (document.getElementById('passagemCargoEncargos').checked) {
-            document.getElementById('campoAdicionalpassagemCargoEncargosDetalhe').classList.remove('hidden');
-        } else if (document.getElementById('recebimentoCargoEncargos').checked) {
-            document.getElementById('campoAdicionalrecebimentoCargoEncargosDetalhe').classList.remove('hidden');
-        } else if (document.getElementById('passagemMaterialValores').checked) {
-            document.getElementById('campoAdicionalpassagemMaterialValoresDetalhe').classList.remove('hidden');
-        } else if (document.getElementById('recebimentoMaterialValores').checked) {
-            document.getElementById('campoAdicionalrecebimentoMaterialValoresDetalhe').classList.remove('hidden');
-        } else if (document.getElementById('assuncaoFuncao').checked) {
-            document.getElementById('campoAdicionalassuncaoFuncaoDetalhe').classList.remove('hidden');
+        const passagemMaterialEncargos = document.getElementById('passagemMaterialEncargosValores');
+        const recebimentoMaterialEncargos = document.getElementById('recebimentoMaterialEncargosValores');
+        const passagemCargo = document.getElementById('passagemCargoEncargos');
+        const recebimentoCargo = document.getElementById('recebimentoCargoEncargos');
+        const passagemMaterial = document.getElementById('passagemMaterialValores');
+        const recebimentoMaterial = document.getElementById('recebimentoMaterialValores');
+        const assuncao = document.getElementById('assuncaoFuncao');
+
+        if (passagemMaterialEncargos && passagemMaterialEncargos.checked) {
+            const campo = document.getElementById('campoAdicionalpassagemMaterialEncargosValoresDetalhe');
+            if (campo) campo.classList.remove('hidden');
+        } else if (recebimentoMaterialEncargos && recebimentoMaterialEncargos.checked) {
+            const campo = document.getElementById('campoAdicionalrecebimentoMaterialEncargosValoresDetalhe');
+            if (campo) campo.classList.remove('hidden');
+        } else if (passagemCargo && passagemCargo.checked) {
+            const campo = document.getElementById('campoAdicionalpassagemCargoEncargosDetalhe');
+            if (campo) campo.classList.remove('hidden');
+        } else if (recebimentoCargo && recebimentoCargo.checked) {
+            const campo = document.getElementById('campoAdicionalrecebimentoCargoEncargosDetalhe');
+            if (campo) campo.classList.remove('hidden');
+        } else if (passagemMaterial && passagemMaterial.checked) {
+            const campo = document.getElementById('campoAdicionalpassagemMaterialValoresDetalhe');
+            if (campo) campo.classList.remove('hidden');
+        } else if (recebimentoMaterial && recebimentoMaterial.checked) {
+            const campo = document.getElementById('campoAdicionalrecebimentoMaterialValoresDetalhe');
+            if (campo) campo.classList.remove('hidden');
+        } else if (assuncao && assuncao.checked) {
+            const campo = document.getElementById('campoAdicionalassuncaoFuncaoDetalhe');
+            if (campo) campo.classList.remove('hidden');
         }
     });
 });
@@ -460,26 +475,32 @@ document.querySelectorAll('input[name="inclusaoferias"]').forEach(function (radi
 document.querySelectorAll('input[name="estadoFuncaoTransitoria"]').forEach(function(radio) {
     radio.addEventListener('change', function() {
         // Verifica qual radio button está selecionado e adiciona ou remove o atributo 'required' (Script apenas ref a passagem de cargo encargo e material (***********verif se não consigo juntar**************))
+        const nomeFuncaoEl = document.getElementById('nomeFuncao');
+        const nomePelSecEl = document.getElementById('nomePelSeç');
+
         if (this.id === 'TermTransmCargoEncargo' || this.id === 'TermRecebCargoEncargo' || this.id === 'TermPassMaterialCargo' || this.id === 'TermRecebMaterialCargo') {
-            document.getElementById('nomeFuncao').setAttribute('required', 'required');
+            if (nomeFuncaoEl) nomeFuncaoEl.setAttribute('required', 'required');
         } else {
-            document.getElementById('nomeFuncao').removeAttribute('required');
+            if (nomeFuncaoEl) nomeFuncaoEl.removeAttribute('required');
         }
 
         if (this.id === 'TermPassMaterial' || this.id === 'TermRecebMaterial') {
-            document.getElementById('nomePelSeç').setAttribute('required', 'required');
+            if (nomePelSecEl) nomePelSecEl.setAttribute('required', 'required');
         } else {
-            document.getElementById('nomePelSeç').removeAttribute('required');
+            if (nomePelSecEl) nomePelSecEl.removeAttribute('required');
         }
     });
 });
+
 document.querySelectorAll('input[name="semEfeito"]').forEach(function(radio) {
     radio.addEventListener('change', function() {
         // Verifica qual radio button está selecionado e adiciona ou remove o atributo 'required' (Script apenas ref a passagem de cargo encargo e material (***********verif se não consigo juntar**************))
+        const tipoAprSemEfeitoEl = document.getElementById('tipoAprSemEfeito');
+
         if (this.id === 'TornosemEfeitoApresentacao') {
-            document.getElementById('tipoAprSemEfeito').setAttribute('required', 'required');
+            if (tipoAprSemEfeitoEl) tipoAprSemEfeitoEl.setAttribute('required', 'required');
         } else {
-            document.getElementById('tipoAprSemEfeito').removeAttribute('required');
+            if (tipoAprSemEfeitoEl) tipoAprSemEfeitoEl.removeAttribute('required');
         }
     });
 });

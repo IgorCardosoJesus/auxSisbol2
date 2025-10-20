@@ -2,22 +2,39 @@
 import { templates } from './templates.js';
 import { formatadordeData, ApartirOuAcontar } from './formatacoes.js';
 
-export function processarPassagemFuncao(tipoEspecificoNotaPassagemFuncao, inputs) {
-  console.log('Processing passagem funcao tipo:', tipoEspecificoNotaPassagemFuncao, 'with inputs:', inputs);
+export function processarPassagemFuncao(inputs) {
+  console.log('🔄 [PASSAGEM FUNÇÃO] Processing with inputs:', inputs);
+
   // Validações gerais
-  if (typeof tipoEspecificoNotaPassagemFuncao !== 'string' || !tipoEspecificoNotaPassagemFuncao) {
-    throw new Error('Tipo específico de passagem de função inválido');
-  }
   if (typeof inputs !== 'object' || inputs === null) {
+    console.error('❌ [PASSAGEM FUNÇÃO] Inputs inválidos:', inputs);
     throw new Error('Inputs devem ser um objeto válido');
   }
 
+  // Identificar o tipo específico pelos inputs
+  const tipoEspecifico = inputs.funcoes;
+  console.log('🔍 [PASSAGEM FUNÇÃO] Tipo específico identificado:', tipoEspecifico);
+
+  if (!tipoEspecifico) {
+    console.error('❌ [PASSAGEM FUNÇÃO] Tipo específico não encontrado nos inputs');
+    throw new Error('Tipo específico de passagem de função não identificado');
+  }
+
   try {
-    if (tipoEspecificoNotaPassagemFuncao === 'passagemMaterialEncargosValores') {
+    console.log('🔍 [PASSAGEM FUNÇÃO] Processando tipo:', tipoEspecifico);
+
+    if (tipoEspecifico === 'passagemMaterialEncargosValores') {
+      console.log('📦 [PASSAGEM FUNÇÃO] Processando passagem material/encargos/valores');
       if (!inputs.prazo_passagemMaterialEncargosValores || !inputs.funcao_passagemMaterialEncargosValores || !inputs.data_inicio_passagemMaterialEncargosValores) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Campos obrigatórios faltando:', {
+          prazo: inputs.prazo_passagemMaterialEncargosValores,
+          funcao: inputs.funcao_passagemMaterialEncargosValores,
+          data: inputs.data_inicio_passagemMaterialEncargosValores
+        });
         throw new Error('Prazo, função e data obrigatórios');
       }
       if (!/^\d{4}-\d{2}-\d{2}$/.test(inputs.data_inicio_passagemMaterialEncargosValores)) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Data no formato incorreto:', inputs.data_inicio_passagemMaterialEncargosValores);
         throw new Error('Data no formato YYYY-MM-DD');
       }
       const prazo = inputs.prazo_passagemMaterialEncargosValores;
@@ -34,11 +51,18 @@ export function processarPassagemFuncao(tipoEspecificoNotaPassagemFuncao, inputs
         .replace('{{dataInicioPass}}', dataInicioPass);
     }
 
-    if (tipoEspecificoNotaPassagemFuncao === 'recebimentoMaterialEncargosValores') {
+    if (tipoEspecifico === 'recebimentoMaterialEncargosValores') {
+      console.log('📦 [PASSAGEM FUNÇÃO] Processando recebimento material/encargos/valores');
       if (!inputs.prazo_recebimentoMaterialEncargosValores || !inputs.funcao_recebimentoMaterialEncargosValores || !inputs.data_inicio_recebimentoMaterialEncargosValores) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Campos obrigatórios faltando:', {
+          prazo: inputs.prazo_recebimentoMaterialEncargosValores,
+          funcao: inputs.funcao_recebimentoMaterialEncargosValores,
+          data: inputs.data_inicio_recebimentoMaterialEncargosValores
+        });
         throw new Error('Prazo, função e data obrigatórios');
       }
       if (!/^\d{4}-\d{2}-\d{2}$/.test(inputs.data_inicio_recebimentoMaterialEncargosValores)) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Data no formato incorreto:', inputs.data_inicio_recebimentoMaterialEncargosValores);
         throw new Error('Data no formato YYYY-MM-DD');
       }
       const prazo = inputs.prazo_recebimentoMaterialEncargosValores;
@@ -55,11 +79,18 @@ export function processarPassagemFuncao(tipoEspecificoNotaPassagemFuncao, inputs
         .replace('{{dataInicioPass}}', dataInicioPass);
     }
 
-    if (tipoEspecificoNotaPassagemFuncao === 'passagemCargoEncargos') {
+    if (tipoEspecifico === 'passagemCargoEncargos') {
+      console.log('📦 [PASSAGEM FUNÇÃO] Processando passagem cargo/encargos');
       if (!inputs.prazo_passagemCargoEncargos || !inputs.funcao_passagemCargoEncargos || !inputs.data_inicio_passagemCargoEncargos) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Campos obrigatórios faltando:', {
+          prazo: inputs.prazo_passagemCargoEncargos,
+          funcao: inputs.funcao_passagemCargoEncargos,
+          data: inputs.data_inicio_passagemCargoEncargos
+        });
         throw new Error('Prazo, função e data obrigatórios');
       }
       if (!/^\d{4}-\d{2}-\d{2}$/.test(inputs.data_inicio_passagemCargoEncargos)) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Data no formato incorreto:', inputs.data_inicio_passagemCargoEncargos);
         throw new Error('Data no formato YYYY-MM-DD');
       }
       const prazo = inputs.prazo_passagemCargoEncargos;
@@ -76,11 +107,18 @@ export function processarPassagemFuncao(tipoEspecificoNotaPassagemFuncao, inputs
         .replace('{{dataInicioPass}}', dataInicioPass);
     }
 
-    if (tipoEspecificoNotaPassagemFuncao === 'recebimentoCargoEncargos') {
+    if (tipoEspecifico === 'recebimentoCargoEncargos') {
+      console.log('📦 [PASSAGEM FUNÇÃO] Processando recebimento cargo/encargos');
       if (!inputs.prazo_recebimentoCargoEncargos || !inputs.funcao_recebimentoCargoEncargos || !inputs.data_inicio_recebimentoCargoEncargos) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Campos obrigatórios faltando:', {
+          prazo: inputs.prazo_recebimentoCargoEncargos,
+          funcao: inputs.funcao_recebimentoCargoEncargos,
+          data: inputs.data_inicio_recebimentoCargoEncargos
+        });
         throw new Error('Prazo, função e data obrigatórios');
       }
       if (!/^\d{4}-\d{2}-\d{2}$/.test(inputs.data_inicio_recebimentoCargoEncargos)) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Data no formato incorreto:', inputs.data_inicio_recebimentoCargoEncargos);
         throw new Error('Data no formato YYYY-MM-DD');
       }
       const prazo = inputs.prazo_recebimentoCargoEncargos;
@@ -97,11 +135,18 @@ export function processarPassagemFuncao(tipoEspecificoNotaPassagemFuncao, inputs
         .replace('{{dataInicioPass}}', dataInicioPass);
     }
 
-    if (tipoEspecificoNotaPassagemFuncao === 'passagemMaterialValores') {
+    if (tipoEspecifico === 'passagemMaterialValores') {
+      console.log('📦 [PASSAGEM FUNÇÃO] Processando passagem material/valores');
       if (!inputs.prazo_passagemMaterialValores || !inputs.funcao_passagemMaterialValores || !inputs.data_inicio_passagemMaterialValores) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Campos obrigatórios faltando:', {
+          prazo: inputs.prazo_passagemMaterialValores,
+          funcao: inputs.funcao_passagemMaterialValores,
+          data: inputs.data_inicio_passagemMaterialValores
+        });
         throw new Error('Prazo, função e data obrigatórios');
       }
       if (!/^\d{4}-\d{2}-\d{2}$/.test(inputs.data_inicio_passagemMaterialValores)) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Data no formato incorreto:', inputs.data_inicio_passagemMaterialValores);
         throw new Error('Data no formato YYYY-MM-DD');
       }
       const prazo = inputs.prazo_passagemMaterialValores;
@@ -118,11 +163,18 @@ export function processarPassagemFuncao(tipoEspecificoNotaPassagemFuncao, inputs
         .replace('{{dataInicioPass}}', dataInicioPass);
     }
 
-    if (tipoEspecificoNotaPassagemFuncao === 'recebimentoMaterialValores') {
+    if (tipoEspecifico === 'recebimentoMaterialValores') {
+      console.log('📦 [PASSAGEM FUNÇÃO] Processando recebimento material/valores');
       if (!inputs.prazo_recebimentoMaterialValores || !inputs.funcao_recebimentoMaterialValores || !inputs.data_inicio_recebimentoMaterialValores) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Campos obrigatórios faltando:', {
+          prazo: inputs.prazo_recebimentoMaterialValores,
+          funcao: inputs.funcao_recebimentoMaterialValores,
+          data: inputs.data_inicio_recebimentoMaterialValores
+        });
         throw new Error('Prazo, função e data obrigatórios');
       }
       if (!/^\d{4}-\d{2}-\d{2}$/.test(inputs.data_inicio_recebimentoMaterialValores)) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Data no formato incorreto:', inputs.data_inicio_recebimentoMaterialValores);
         throw new Error('Data no formato YYYY-MM-DD');
       }
       const prazo = inputs.prazo_recebimentoMaterialValores;
@@ -139,11 +191,17 @@ export function processarPassagemFuncao(tipoEspecificoNotaPassagemFuncao, inputs
         .replace('{{dataInicioPass}}', dataInicioPass);
     }
 
-    if (tipoEspecificoNotaPassagemFuncao === 'assuncaoFuncao') {
+    if (tipoEspecifico === 'assuncaoFuncao') {
+      console.log('📦 [PASSAGEM FUNÇÃO] Processando assunção de função');
       if (!inputs.funcao_assuncaoFuncao || !inputs.data_inicio_assuncaoFuncao) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Campos obrigatórios faltando:', {
+          funcao: inputs.funcao_assuncaoFuncao,
+          data: inputs.data_inicio_assuncaoFuncao
+        });
         throw new Error('Função e data obrigatórios');
       }
       if (!/^\d{4}-\d{2}-\d{2}$/.test(inputs.data_inicio_assuncaoFuncao)) {
+        console.error('❌ [PASSAGEM FUNÇÃO] Data no formato incorreto:', inputs.data_inicio_assuncaoFuncao);
         throw new Error('Data no formato YYYY-MM-DD');
       }
       const nomeFuncao = inputs.funcao_assuncaoFuncao;
@@ -155,9 +213,9 @@ export function processarPassagemFuncao(tipoEspecificoNotaPassagemFuncao, inputs
         .replace('{{dataInicioPass}}', dataInicioPass);
     }
 
-    throw new Error('Tipo de passagem de função não suportado');
+    throw new Error('Tipo de passagem de função não suportado: ' + tipoEspecifico);
   } catch (error) {
-    console.error('Erro em processarPassagemFuncao:', error.message);
+    console.error('❌ [PASSAGEM FUNÇÃO] Erro:', error.message);
     throw error;
   }
 }

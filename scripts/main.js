@@ -11,36 +11,109 @@ import { pegarAnosAnterioresAtualEPosteriores, pegarTodasFuncoesOM, pegarFuncoes
 // Import other modules as needed
 
 function gerarResultado(inputs) {
-  console.log('Generating result for inputs:', inputs); // Debug log
-  // Lógica orquestradora: chama funções, substitui, retorna HTML string
+  console.log('=== INÍCIO gerarResultado ===');
+  console.log('🔍 Generating result for inputs:', inputs);
+  console.log('🔍 Tipo de nota detectado:', inputs.tipoNota);
+  console.log('🔍 Todos os valores de inputs:', Object.keys(inputs));
+
   let output = '';
   try {
     if (inputs.tipoNota === 'afastamentosdiversos') {
+      console.log('🔄 Processando AFASTAMENTOS DIVERSOS');
       const tipoEspecifico = inputs.afastamentos;
+      console.log('🔍 Tipo específico de afastamento:', tipoEspecifico);
+      console.log('🔍 Dados disponíveis para afastamentos:', {
+        afastamentos: inputs.afastamentos,
+        anoFerias: inputs.anoFerias,
+        data_inicio_ferias: inputs.data_inicio_ferias
+      });
       output = processarDados(tipoEspecifico, inputs);
+      console.log('✅ Resultado afastamentos:', output);
     } else if (inputs.tipoNota === 'apresentacoesDiversas') {
+      console.log('🔄 Processando APRESENTAÇÕES DIVERSAS');
       const tipoEspecifico = inputs.ApresentEspecifica;
+      console.log('🔍 Tipo específico de apresentação:', tipoEspecifico);
       output = processarApresentacao(tipoEspecifico, inputs);
-    } else if (inputs.tipoNota === 'funcaoTransitoria') {
+      console.log('✅ Resultado apresentações:', output);
+    } else if (inputs.tipoNota === 'dispensaReassuncaoFuncao') {
+      console.log('🔄 Processando FUNÇÃO TRANSITÓRIA');
       const tipoEspecifico = inputs.estadoFuncaoTransitoria;
+      console.log('🔍 Tipo específico de função transitória:', tipoEspecifico);
+      console.log('🔍 Dados disponíveis para função transitória:', {
+        estadoFuncaoTransitoria: inputs.estadoFuncaoTransitoria,
+        data_saida_retorno_funcao: inputs.data_saida_retorno_funcao
+      });
       output = processarFuncaoTransitoria(tipoEspecifico, inputs);
+      console.log('✅ Resultado função transitória:', output);
     } else if (inputs.tipoNota === 'tornarSemEfeito') {
+      console.log('🔄 Processando TORNAR SEM EFEITO');
       const tipoEspecifico = inputs.semEfeito;
+      console.log('🔍 Tipo específico sem efeito:', tipoEspecifico);
+      console.log('🔍 Dados disponíveis para sem efeito:', {
+        semEfeito: inputs.semEfeito,
+        data_bi_publicou: inputs.data_bi_publicou,
+        nrBiConstPub: inputs.nrBiConstPub,
+        nrPagBI: inputs.nrPagBI
+      });
       output = processarTornarSemEfeito(tipoEspecifico, inputs);
+      console.log('✅ Resultado sem efeito:', output);
     } else if (inputs.tipoNota === 'passagemFuncao') {
+      console.log('🔄 Processando PASSAGEM DE FUNÇÃO');
+      console.log('🔍 Dados disponíveis para passagem de função:', {
+        funcoes: inputs.funcoes,
+        prazo_passagemMaterialEncargosValores: inputs.prazo_passagemMaterialEncargosValores,
+        funcao_passagemMaterialEncargosValores: inputs.funcao_passagemMaterialEncargosValores,
+        data_inicio_passagemMaterialEncargosValores: inputs.data_inicio_passagemMaterialEncargosValores
+      });
       output = processarPassagemFuncao(inputs);
+      console.log('✅ Resultado passagem função:', output);
     } else if (inputs.tipoNota === 'inclusaoPlanFerias') {
+      console.log('🔄 Processando INCLUSÃO PLANO DE FÉRIAS');
+      console.log('🔍 Dados disponíveis para inclusão:', {
+        inclusaoferias: inputs.inclusaoferias,
+        anoFeriasInclusao: inputs.AnoFeriasInclusao
+      });
       output = processarInclusaoPlanFerias(inputs);
+      console.log('✅ Resultado inclusão férias:', output);
     } else if (inputs.tipoNota === 'mudancaPlanoFerias') {
+      console.log('🔄 Processando MUDANÇA PLANO DE FÉRIAS');
+      console.log('🔍 Dados disponíveis para mudança PF:', {
+        mudancaPF: inputs.mudancaPF,
+        anoFeriasMudanca: inputs.anoFeriasMudanca,
+        data_do_DIEx: inputs.data_do_DIEx
+      });
       output = processarMudancaPlanoFerias(inputs);
+      console.log('✅ Resultado mudança PF:', output);
     } else if (inputs.tipoNota === 'refDIExGenerico') {
+      console.log('🔄 Processando REFERÊNCIA DIEX');
+      console.log('🔍 Dados disponíveis para ref DIEx:', inputs);
       output = processarRefDIEx(inputs);
+      console.log('✅ Resultado ref DIEx:', output);
+    } else {
+      console.warn('⚠️ TIPO DE NOTA NÃO RECONHECIDO:', inputs.tipoNota);
+      console.log('🔍 Valores disponíveis esperados:', [
+        'afastamentosdiversos',
+        'apresentacoesDiversas',
+        'dispensaReassuncaoFuncao',
+        'tornarSemEfeito',
+        'passagemFuncao',
+        'inclusaoPlanFerias',
+        'mudancaPlanoFerias',
+        'refDIExGenerico'
+      ]);
+      output = 'Tipo de nota não reconhecido: ' + inputs.tipoNota;
     }
-    // Add for other tipos: e.g., if (inputs.tipoNota === 'outroTipo') output = processarOutroTipo(inputs);
+
+    console.log('=== RESULTADO FINAL ===');
+    console.log('✅ Output gerado:', output);
+    console.log('=== FIM gerarResultado ===');
+
   } catch (error) {
+    console.error('❌ ERRO em gerarResultado:', error);
+    console.error('📍 Stack trace:', error.stack);
     throw new Error(`Erro no processamento: ${error.message}`);
   }
-  // Sanitize para XSS: output é string de texto, textContent usado para segurança
+
   return output;
 }
 
@@ -132,13 +205,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Adicionar event listener para o botão Gerar Nota
   const btnGerarNota = document.getElementById('btnGerarNota_01');
+  console.log('🔍 Procurando botão btnGerarNota_01...');
+  console.log('📍 Botão encontrado:', btnGerarNota);
+
   if (btnGerarNota) {
-    console.log('Botão btnGerarNota_01 encontrado, adicionando event listener');
-    btnGerarNota.addEventListener('click', function() {
-      console.log('Botão Gerar Nota clicado!');
+    console.log('✅ Botão btnGerarNota_01 encontrado, adicionando event listener');
+    console.log('🔧 Tipo do botão:', btnGerarNota.type);
+    console.log('🔧 Classes do botão:', btnGerarNota.className);
+    console.log('🔧 Texto do botão:', btnGerarNota.textContent);
+
+    btnGerarNota.addEventListener('click', function(event) {
+      console.log('🚀 ===== BOTÃO GERAR NOTA CLICADO! =====');
+      console.log('🔍 Event:', event);
+      console.log('🔍 Event target:', event.target);
+      console.log('🔍 Event currentTarget:', event.currentTarget);
+
+      // Prevenir comportamento padrão se necessário
+      event.preventDefault();
+      event.stopPropagation();
+
       try {
+        console.log('📝 Chamando gerarNotaClientSide...');
         const resultado = window.gerarNotaClientSide();
-        console.log('Nota gerada:', resultado);
+        console.log('✅ Nota gerada com sucesso:', resultado);
 
         // Usar o modal existente para exibir o resultado
         let abertura = resultado;
@@ -151,26 +240,55 @@ document.addEventListener('DOMContentLoaded', () => {
           fechamento = closingPhrase;
         }
 
-        console.log('Texto de abertura:', abertura);
-        console.log('Texto de fechamento:', fechamento);
+        console.log('📝 Texto de abertura:', abertura);
+        console.log('📝 Texto de fechamento:', fechamento);
 
         // Preencher o modal com o conteúdo
-        document.getElementById('textoAbertura').textContent = abertura;
-        document.getElementById('textoFechamento').textContent = fechamento;
+        const textoAberturaEl = document.getElementById('textoAbertura');
+        const textoFechamentoEl = document.getElementById('textoFechamento');
+
+        console.log('🔍 Elemento textoAbertura:', textoAberturaEl);
+        console.log('🔍 Elemento textoFechamento:', textoFechamentoEl);
+
+        if (textoAberturaEl && textoFechamentoEl) {
+          textoAberturaEl.textContent = abertura;
+          textoFechamentoEl.textContent = fechamento;
+          console.log('✅ Conteúdo do modal preenchido');
+        } else {
+          console.error('❌ Elementos do modal não encontrados');
+          alert('Resultado: ' + resultado);
+          return;
+        }
 
         // Mostrar o modal
         const modal = document.getElementById('modalGerarNota_01');
-        modal.style.display = 'flex';
-        modal.setAttribute('aria-hidden','false');
+        console.log('🔍 Modal encontrado:', modal);
 
-        console.log('Modal exibido com sucesso');
+        if (modal) {
+          modal.style.display = 'flex';
+          modal.setAttribute('aria-hidden','false');
+          console.log('✅ Modal exibido com sucesso');
+        } else {
+          console.error('❌ Modal não encontrado');
+          alert('Resultado: ' + resultado);
+        }
 
       } catch (error) {
-        console.error('Erro ao gerar nota:', error);
+        console.error('❌ ERRO CRÍTICO ao gerar nota:', error);
+        console.error('📍 Stack trace:', error.stack);
         alert('Erro ao gerar nota: ' + error.message);
       }
     });
+
+
   } else {
-    console.error('Botão btnGerarNota_01 não encontrado no DOM');
+    console.error('❌ Botão btnGerarNota_01 NÃO encontrado no DOM');
+    console.log('🔍 Todos os elementos com ID que contém "gerar":',
+      Array.from(document.querySelectorAll('[id*="gerar" i]')).map(el => ({
+        id: el.id,
+        tagName: el.tagName,
+        textContent: el.textContent.slice(0, 50)
+      }))
+    );
   }
 });
