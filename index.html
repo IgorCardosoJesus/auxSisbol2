@@ -1179,7 +1179,7 @@
                     <label for="recebimentoMaterialEncargosValores">Recebimento de Material, de Encargos e Valores</label>
                     <br><br>
                     <!-- Detalhamento -->
-                    <div id="campoAdicionalrecebimentoMaterialEncargosValoresDetalhe" class="hidden">
+                    <div id="campoAdicionalrecebimentoMaterialEncargosValores" class="hidden">
                         <label for="prazo_recebimentoMaterialEncargosValores">Prazo:</label>
                         <select id="prazo_recebimentoMaterialEncargosValores" name="prazo_recebimentoMaterialEncargosValores" class="campo30">
                             <option value="04">4 dias</option>
@@ -1515,7 +1515,7 @@ function copyToClipboard(text) {
   }
 }
 
-document.getElementById('btnGerarNota_01').addEventListener('click', function(){
+document.querySelectorAll('.btnGerarNota').forEach(btn => btn.addEventListener('click', function(){
   var conteudo = (typeof window.gerarNotaClientSide === 'function')
     ? window.gerarNotaClientSide()
     : '<p>Não há rotina de geração implementada no client-side.</p>';
@@ -1533,7 +1533,7 @@ document.getElementById('btnGerarNota_01').addEventListener('click', function(){
   var modal = document.getElementById('modalGerarNota_01');
   modal.style.display = 'flex';
   modal.setAttribute('aria-hidden','false');
-});
+}));
 document.getElementById('fecharModalGerarNota').addEventListener('click', function(){
   var modal = document.getElementById('modalGerarNota_01');
   modal.style.display = 'none';

@@ -370,7 +370,7 @@ document.querySelectorAll('input[name="afastamentos"]').forEach(function (radio)
         } else if (document.getElementById('dispensaSCmtBtl').checked) {
             document.getElementById('campoAdicionaldispensaSCmtBtlDetalhe').classList.remove('hidden');
         } else if (document.getElementById('dispensaCmtBtl').checked) {
-            document.getElementById('campoAdicionaldispensaCmtBtlDetalhe').classList.remove('hidden');
+            document.getElementById('campoAdicionaldispensaCmtDetalhe').classList.remove('hidden');
         } else if (document.getElementById('dispensa5BdaCBld').checked) {
             document.getElementById('campoAdicionaldispensaCmt5BgdaDetalhe').classList.remove('hidden');
         } else if (document.getElementById('dispensaDescontoFerias').checked) {
@@ -484,3 +484,26 @@ document.querySelectorAll('input[name="semEfeito"]').forEach(function(radio) {
     });
 });
 
+function updateButtonState() {
+  console.log('updateButtonState called');
+  const tipoNota = document.querySelector('input[name="tipoNota"]:checked');
+  console.log('tipoNota:', tipoNota ? tipoNota.value : 'none');
+
+  // Sempre manter botões habilitados
+  const buttons = document.querySelectorAll('.botoes');
+  buttons.forEach(button => button.disabled = false);
+  console.log('Setting buttons disabled to: false (always enabled)');
+}
+
+// Add listeners
+document.querySelectorAll('input[name="tipoNota"]').forEach(radio => radio.addEventListener('change', updateButtonState));
+document.querySelectorAll('input[name="afastamentos"]').forEach(radio => radio.addEventListener('change', updateButtonState));
+document.querySelectorAll('select[name="anoFerias"], input[name="data_inicio_ferias"], select[name="anoFeriasRestantes"], input[name="data_inicio_ferias_restantes"], select[name="qtdeDiasRest"]').forEach(el => el.addEventListener('change', updateButtonState));
+document.querySelectorAll('input[name="ApresentEspecifica"]').forEach(radio => radio.addEventListener('change', updateButtonState));
+document.querySelectorAll('#data_apresentacao, #anoDasFerias, #funcoesBtl, #funcoesBtlCarga, #QtdeDias, #QtdeDiasscmt, #SUCmtSUdeuDisp, #QtdeDiasCmtSU, #dispDescoFerias, #anoDaDispDescoFerias, #desistiuTransito').forEach(el => el.addEventListener('change', updateButtonState));
+document.querySelectorAll('input[name="estadoFuncaoTransitoria"]').forEach(radio => radio.addEventListener('change', updateButtonState));
+document.querySelectorAll('#data_saida_retorno_funcao, #nomeFuncaoDesignacao, #DispensadoDaFuncao, #exercerouResp, #motivoDispensa, #DispensadoDaSegundaFuncao, #exercerouResp2, #nomefuncaoSubstTemp, #nomefuncaoreassumindo, #nomesegundafuncaoreassumindo').forEach(el => el.addEventListener('change', updateButtonState));
+document.querySelectorAll('input[name="semEfeito"]').forEach(radio => radio.addEventListener('change', updateButtonState));
+document.querySelectorAll('#data_bi_publicou, #nrBiConstPub, #nrPagBI, #tipoAprSemEfeito').forEach(el => el.addEventListener('change', updateButtonState));
+document.querySelectorAll('input[name="funcoes"]').forEach(radio => radio.addEventListener('change', updateButtonState));
+document.querySelectorAll('#prazo_passagemMaterialEncargosValores, #funcao_passagemMaterialEncargosValores, #data_inicio_passagemMaterialEncargosValores, #prazo_recebimentoMaterialEncargosValores, #funcao_recebimentoMaterialEncargosValores, #data_inicio_recebimentoMaterialEncargosValores, #prazo_passagemCargoEncargos, #funcao_passagemCargoEncargos, #data_inicio_passagemCargoEncargos, #prazo_recebimentoCargoEncargos, #funcao_recebimentoCargoEncargos, #data_inicio_recebimentoCargoEncargos, #prazo_passagemMaterialValores, #funcao_passagemMaterialValores, #data_inicio_passagemMaterialValores, #prazo_recebimentoMaterialValores, #funcao_recebimentoMaterialValores, #data_inicio_recebimentoMaterialValores, #funcao_assuncaoFuncao, #data_inicio_assuncaoFuncao').forEach(el => el.addEventListener('change', updateButtonState));
